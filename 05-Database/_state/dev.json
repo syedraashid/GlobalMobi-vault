@@ -1,0 +1,6621 @@
+{
+ "env": "dev",
+ "kind": "file",
+ "source": "script file dev-06-10-2026-Schema-Only.sql",
+ "db": "TifoXR",
+ "asOf": "2026-10-14T16:39:38",
+ "tables": {
+  "activity_log": {
+   "cols": {
+    "id": "bigint|notnull|identity",
+    "space_id": "int|notnull",
+    "entity_type": "nvarchar(50)|notnull",
+    "entity_id": "nvarchar(50)|notnull",
+    "entity_name": "nvarchar(200)|null",
+    "action": "nvarchar(20)|notnull",
+    "performed_by": "nvarchar(256)|notnull",
+    "performed_at": "datetime2(0)|notnull",
+    "correlation_id": "nvarchar(100)|null"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "entity_type",
+    "entity_id",
+    "entity_name",
+    "action",
+    "performed_by",
+    "performed_at",
+    "correlation_id"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "ad_3d_model": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "model_key": "varchar(64)|notnull",
+    "display_name": "nvarchar(100)|notnull",
+    "description": "nvarchar(500)|null",
+    "preview_media_id": "bigint|null",
+    "is_active": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|null",
+    "modified_time": "datetime2(7)|null"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "model_key",
+    "display_name",
+    "description",
+    "preview_media_id",
+    "is_active",
+    "is_deleted",
+    "created_by",
+    "created_time",
+    "modified_by",
+    "modified_time"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "preview_media_id>media(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "ad_placement": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "placement_key": "varchar(50)|notnull",
+    "label": "varchar(100)|notnull",
+    "is_3d": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|null",
+    "modified_by": "varchar(36)|null"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "placement_key",
+    "label",
+    "is_3d",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "ad_placement_migration_log": {
+   "cols": {
+    "log_id": "int|notnull|identity",
+    "migration_id": "uniqueidentifier|notnull",
+    "migrated_at": "datetime2(7)|notnull",
+    "migrated_by": "nvarchar(128)|notnull",
+    "space_id": "int|notnull",
+    "source_key": "varchar(50)|notnull",
+    "destination_key": "varchar(50)|notnull",
+    "ad_id": "int|notnull",
+    "old_placement_id": "int|notnull",
+    "new_placement_id": "int|notnull",
+    "old_modified_time": "datetime2(7)|null",
+    "old_modified_by": "varchar(36)|null",
+    "rolled_back_at": "datetime2(7)|null",
+    "rolled_back_by": "nvarchar(128)|null"
+   },
+   "order": [
+    "log_id",
+    "migration_id",
+    "migrated_at",
+    "migrated_by",
+    "space_id",
+    "source_key",
+    "destination_key",
+    "ad_id",
+    "old_placement_id",
+    "new_placement_id",
+    "old_modified_time",
+    "old_modified_by",
+    "rolled_back_at",
+    "rolled_back_by"
+   ],
+   "pk": [
+    "log_id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "ad_schedule_dates": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "ad_id": "int|notnull",
+    "run_date": "date|notnull",
+    "is_deleted": "bit|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "created_by": "nvarchar(255)|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "nvarchar(255)|notnull"
+   },
+   "order": [
+    "id",
+    "ad_id",
+    "run_date",
+    "is_deleted",
+    "created_time",
+    "created_by",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "ad_id>advertiser_ad(id)",
+    "ad_id>advertiser_ad(id)"
+   ],
+   "uq": []
+  },
+  "advertiser": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "name_key": "uniqueidentifier|notnull",
+    "industry": "varchar(100)|null",
+    "is_active": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|null",
+    "modified_by": "varchar(36)|null",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "status": "varchar(20)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "name_key",
+    "industry",
+    "is_active",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time",
+    "status"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "advertiser_ad": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "campaign_id": "int|notnull",
+    "name_key": "uniqueidentifier|notnull",
+    "placement_id": "int|notnull",
+    "media_id": "bigint|notnull",
+    "duration_seconds": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|null",
+    "modified_by": "varchar(36)|null",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "status": "varchar(20)|notnull",
+    "model_id": "int|null"
+   },
+   "order": [
+    "id",
+    "campaign_id",
+    "name_key",
+    "placement_id",
+    "media_id",
+    "duration_seconds",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time",
+    "status",
+    "model_id"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "campaign_id>advertiser_campaign(id)",
+    "media_id>media(id)",
+    "model_id>ad_3d_model(id)",
+    "placement_id>ad_placement(id)"
+   ],
+   "uq": []
+  },
+  "advertiser_campaign": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "advertiser_id": "int|notnull",
+    "name_key": "uniqueidentifier|notnull",
+    "start_date": "date|notnull",
+    "end_date": "date|notnull",
+    "daily_rate": "decimal(18,2)|notnull",
+    "duration_modifier": "decimal(5,2)|notnull",
+    "cost_per_day": "decimal(18,2)|notnull",
+    "total_cost": "decimal(18,2)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|null",
+    "modified_by": "varchar(36)|null",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "status": "varchar(20)|notnull",
+    "currency_id": "int|null"
+   },
+   "order": [
+    "id",
+    "advertiser_id",
+    "name_key",
+    "start_date",
+    "end_date",
+    "daily_rate",
+    "duration_modifier",
+    "cost_per_day",
+    "total_cost",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time",
+    "status",
+    "currency_id"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "advertiser_id>advertiser(id)"
+   ],
+   "uq": []
+  },
+  "audit_log": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "table_name": "varchar(64)|notnull",
+    "row_id": "char(36)|notnull",
+    "column_name": "varchar(255)|notnull",
+    "old_value": "varchar(255)|notnull",
+    "new_value": "varchar(255)|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "change_reason": "varchar(255)|notnull"
+   },
+   "order": [
+    "id",
+    "table_name",
+    "row_id",
+    "column_name",
+    "old_value",
+    "new_value",
+    "modified_time",
+    "modified_by",
+    "change_reason"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "avatar": {
+   "cols": {
+    "id": "int|notnull",
+    "asset_url": "varchar(255)|notnull",
+    "thumbnail_media_id": "bigint|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "asset_url",
+    "thumbnail_media_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "id>item(id)",
+    "thumbnail_media_id>media(id)"
+   ],
+   "uq": []
+  },
+  "badge": {
+   "cols": {
+    "id": "int|notnull",
+    "name_key": "char(36)|null",
+    "description_key": "char(36)|null",
+    "media_id": "bigint|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "name_key",
+    "description_key",
+    "media_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "id>item(id)",
+    "media_id>media(id)"
+   ],
+   "uq": []
+  },
+  "blob_upload": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "blob_path": "nvarchar(500)|notnull",
+    "file_name": "nvarchar(260)|notnull",
+    "content_type": "nvarchar(200)|notnull",
+    "size_bytes": "bigint|notnull",
+    "uploaded_by": "varchar(64)|notnull",
+    "uploaded_at": "datetime2(7)|notnull",
+    "is_deleted": "bit|notnull"
+   },
+   "order": [
+    "id",
+    "blob_path",
+    "file_name",
+    "content_type",
+    "size_bytes",
+    "uploaded_by",
+    "uploaded_at",
+    "is_deleted"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "booth": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "map_spot_id": "int|null",
+    "name_key": "uniqueidentifier|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "status": "varchar(20)|notnull",
+    "icon_key": "varchar(50)|null"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "map_spot_id",
+    "name_key",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_time",
+    "created_by",
+    "status",
+    "icon_key"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "map_spot_id>map_spot(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "booth_comment": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|null",
+    "booth_id": "int|null",
+    "user_id": "uniqueidentifier|notnull",
+    "predefined_comments_id": "int|notnull",
+    "is_active": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "booth_id",
+    "user_id",
+    "predefined_comments_id",
+    "is_active",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "booth_id>booth(id)",
+    "predefined_comments_id>predefined_comments(id)",
+    "space_id>space(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "booth_media": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "booth_id": "int|notnull",
+    "media_id": "bigint|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "status": "varchar(20)|notnull"
+   },
+   "order": [
+    "id",
+    "booth_id",
+    "media_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_time",
+    "created_by",
+    "status"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "booth_id>booth(id)",
+    "media_id>media(id)"
+   ],
+   "uq": []
+  },
+  "campaign_status": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "status": "varchar(50)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "status",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "charity": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "name_key": "uniqueidentifier|null",
+    "description_key": "uniqueidentifier|null",
+    "logo_media_id": "bigint|null",
+    "website_url": "varchar(255)|null",
+    "donation_url": "varchar(255)|notnull",
+    "is_active": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "space_id": "int|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "status": "varchar(20)|notnull"
+   },
+   "order": [
+    "id",
+    "name_key",
+    "description_key",
+    "logo_media_id",
+    "website_url",
+    "donation_url",
+    "is_active",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "space_id",
+    "created_by",
+    "created_time",
+    "status"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "charity_campaigns": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "entity_id": "int|null",
+    "charity_id": "int|notnull",
+    "name_key": "uniqueidentifier|notnull",
+    "description_key": "uniqueidentifier|null",
+    "currency_id": "int|notnull",
+    "status_id": "int|notnull",
+    "goal_amount": "decimal(18,2)|null",
+    "start_time": "datetime2(7)|notnull",
+    "end_time": "datetime2(7)|null",
+    "banner_media_id": "bigint|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "entity_id",
+    "charity_id",
+    "name_key",
+    "description_key",
+    "currency_id",
+    "status_id",
+    "goal_amount",
+    "start_time",
+    "end_time",
+    "banner_media_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "banner_media_id>media(id)",
+    "charity_id>charity(id)",
+    "currency_id>currency(id)",
+    "entity_id>entity(id)",
+    "status_id>campaign_status(id)"
+   ],
+   "uq": []
+  },
+  "content_approval": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "content_type": "varchar(50)|notnull",
+    "content_id": "bigint|notnull",
+    "content_name": "nvarchar(255)|null",
+    "submitted_by": "uniqueidentifier|notnull",
+    "last_edited_by": "uniqueidentifier|null",
+    "status": "varchar(20)|notnull",
+    "submitted_at": "datetime2(7)|notnull",
+    "decided_at": "datetime2(7)|null",
+    "decided_by": "uniqueidentifier|null",
+    "rejection_reason": "varchar(500)|null",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "action_type": "varchar(10)|notnull",
+    "proposed_data": "nvarchar(max)|null",
+    "current_snapshot": "nvarchar(max)|null",
+    "proposed_snapshot": "nvarchar(max)|null"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "content_type",
+    "content_id",
+    "content_name",
+    "submitted_by",
+    "last_edited_by",
+    "status",
+    "submitted_at",
+    "decided_at",
+    "decided_by",
+    "rejection_reason",
+    "created_by",
+    "created_time",
+    "modified_by",
+    "modified_time",
+    "action_type",
+    "proposed_data",
+    "current_snapshot",
+    "proposed_snapshot"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "decided_by>user(id)",
+    "last_edited_by>user(id)",
+    "space_id>space(id)",
+    "submitted_by>user(id)"
+   ],
+   "uq": []
+  },
+  "content_version": {
+   "cols": {
+    "space_id": "int|notnull",
+    "content_type": "nvarchar(50)|notnull",
+    "version": "int|notnull",
+    "updated_at": "datetime2(7)|notnull"
+   },
+   "order": [
+    "space_id",
+    "content_type",
+    "version",
+    "updated_at"
+   ],
+   "pk": [
+    "space_id",
+    "content_type"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "currency": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "name": "varchar(64)|notnull",
+    "ISO": "varchar(5)|notnull",
+    "delimiter": "char(1)|notnull",
+    "symbol": "char(5)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "decimal_places": "tinyint|notnull"
+   },
+   "order": [
+    "id",
+    "name",
+    "ISO",
+    "delimiter",
+    "symbol",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "decimal_places"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "custom_booth_item": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "booth_id": "int|notnull",
+    "custom_booth_item_type_id": "int|notnull",
+    "corresponding_media_id": "bigint|notnull",
+    "name_key": "uniqueidentifier|notnull",
+    "description_key": "uniqueidentifier|null",
+    "start_datetime": "datetime2(7)|null",
+    "end_datetime": "datetime2(7)|null",
+    "is_deleted": "bit|notnull",
+    "status": "varchar(20)|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "created_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "booth_id",
+    "custom_booth_item_type_id",
+    "corresponding_media_id",
+    "name_key",
+    "description_key",
+    "start_datetime",
+    "end_datetime",
+    "is_deleted",
+    "status",
+    "modified_time",
+    "modified_by",
+    "created_time",
+    "created_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "booth_id>booth(id)",
+    "corresponding_media_id>media(id)",
+    "custom_booth_item_type_id>custom_booth_item_type(id)"
+   ],
+   "uq": []
+  },
+  "custom_booth_item_link": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "custom_booth_item_id": "int|notnull",
+    "position_id": "int|null",
+    "external_link": "varchar(255)|null",
+    "thumbnail_media_id": "bigint|null",
+    "is_deleted": "bit|notnull",
+    "status": "varchar(20)|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "created_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "custom_booth_item_id",
+    "position_id",
+    "external_link",
+    "thumbnail_media_id",
+    "is_deleted",
+    "status",
+    "modified_time",
+    "modified_by",
+    "created_time",
+    "created_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "custom_booth_item_id>custom_booth_item(id)",
+    "thumbnail_media_id>media(id)"
+   ],
+   "uq": []
+  },
+  "custom_booth_item_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type_key": "varchar(50)|notnull",
+    "name": "varchar(64)|notnull",
+    "description": "varchar(255)|null",
+    "is_deleted": "bit|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "modified_time": "datetime2(7)|notnull"
+   },
+   "order": [
+    "id",
+    "type_key",
+    "name",
+    "description",
+    "is_deleted",
+    "created_by",
+    "created_time",
+    "modified_by",
+    "modified_time"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "discount_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "discounts": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "discount_type_id": "int|notnull",
+    "name_key": "char(36)|notnull",
+    "start_at": "date|null",
+    "end_at": "date|null",
+    "metadata": "json|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "space_id": "int|notnull",
+    "rate_pct": "decimal(5,2)|null",
+    "amount": "bigint|null",
+    "created_time": "datetime2(7)|notnull",
+    "created_by": "varchar(100)|notnull",
+    "status": "varchar(20)|notnull"
+   },
+   "order": [
+    "id",
+    "discount_type_id",
+    "name_key",
+    "start_at",
+    "end_at",
+    "metadata",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "space_id",
+    "rate_pct",
+    "amount",
+    "created_time",
+    "created_by",
+    "status"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "discount_type_id>discount_type(id)"
+   ],
+   "uq": []
+  },
+  "dispute_status": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "status": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "status",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "entitlement": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "order_line_item_id": "uniqueidentifier|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "status_id": "int|notnull",
+    "quantity": "int|notnull",
+    "granted_datetime": "datetime2(7)|null",
+    "revoked_reason": "varchar(128)|null",
+    "metadata": "nvarchar(max)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "order_line_item_id",
+    "user_id",
+    "status_id",
+    "quantity",
+    "granted_datetime",
+    "revoked_reason",
+    "metadata",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "order_line_item_id>order_line_item(id)",
+    "status_id>entitlement_status(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "entitlement_status": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "status": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "status",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "entity": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "entity_type_id": "int|notnull",
+    "space_id": "int|null",
+    "parent_entity_id": "int|null",
+    "name_key": "char(36)|notnull",
+    "description_key": "char(36)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "currency_id": "int|notnull",
+    "locale_id": "varchar(10)|notnull",
+    "contract_percentage": "decimal(5,2)|notnull"
+   },
+   "order": [
+    "id",
+    "entity_type_id",
+    "space_id",
+    "parent_entity_id",
+    "name_key",
+    "description_key",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time",
+    "currency_id",
+    "locale_id",
+    "contract_percentage"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "currency_id>currency(id)",
+    "locale_id>i18n_locale(id)",
+    "parent_entity_id>entity(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "entity_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type": "nvarchar(64)|notnull",
+    "code": "int|notnull",
+    "modified_time": "datetime2(6)|notnull",
+    "modified_by": "nvarchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type",
+    "code",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "event": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "platform_type_id": "int|notnull",
+    "event_type_id": "int|notnull",
+    "personality_id": "int|null",
+    "localized_name_id": "char(36)|notnull",
+    "description_id": "char(36)|null",
+    "event_url": "nvarchar(max)|null",
+    "is_live": "char(1)|notnull",
+    "subtitle_enabled": "bit|null",
+    "scheduled_length": "int|notnull",
+    "scheduled_start_datetime": "datetime2(7)|notnull",
+    "scheduled_end_datetime": "datetime2(7)|notnull",
+    "actual_start_datetime": "datetime2(7)|null",
+    "actual_end_datetime": "datetime2(7)|null",
+    "rating": "decimal(2,1)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "status": "varchar(20)|notnull",
+    "space_id": "int|null",
+    "capacity": "int|null",
+    "event_format_id": "int|null"
+   },
+   "order": [
+    "id",
+    "platform_type_id",
+    "event_type_id",
+    "personality_id",
+    "localized_name_id",
+    "description_id",
+    "event_url",
+    "is_live",
+    "subtitle_enabled",
+    "scheduled_length",
+    "scheduled_start_datetime",
+    "scheduled_end_datetime",
+    "actual_start_datetime",
+    "actual_end_datetime",
+    "rating",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time",
+    "status",
+    "space_id",
+    "capacity",
+    "event_format_id"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "event_format_id>event_format(id)",
+    "event_type_id>event_type(id)",
+    "personality_id>personality(id)",
+    "platform_type_id>platform_type(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "event_format": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "name": "varchar(64)|notnull",
+    "description": "varchar(255)|null",
+    "is_deleted": "bit|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "name",
+    "description",
+    "is_deleted",
+    "created_time",
+    "created_by",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "event_reviews": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "user_id": "uniqueidentifier|notnull",
+    "event_id": "int|notnull",
+    "moderation_status_id": "int|null",
+    "user_rating": "decimal(2,1)|null",
+    "remarks": "varchar(255)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "user_id",
+    "event_id",
+    "moderation_status_id",
+    "user_rating",
+    "remarks",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "event_id>event(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "event_shares_mtx": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "user_id": "uniqueidentifier|notnull",
+    "event_id": "int|notnull",
+    "share_channel": "varchar(64)|null",
+    "share_url": "varchar(255)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "user_id",
+    "event_id",
+    "share_channel",
+    "share_url",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "event_id>event(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "event_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type": "varchar(64)|notnull",
+    "description": "varchar(255)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type",
+    "description",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "fastest_runner_game": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "game_id": "int|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "start_time": "datetime2(7)|notnull",
+    "end_time": "datetime2(7)|notnull",
+    "best_run": "decimal(8,6)|notnull",
+    "last_run": "decimal(8,6)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "game_id",
+    "user_id",
+    "start_time",
+    "end_time",
+    "best_run",
+    "last_run",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "game_id>game(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "free_trial_items": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "item_id": "int|null",
+    "status": "varchar(20)|notnull",
+    "is_deleted": "bit|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "created_by": "varchar(200)|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(200)|notnull",
+    "package_id": "int|null"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "item_id",
+    "status",
+    "is_deleted",
+    "created_time",
+    "created_by",
+    "modified_time",
+    "modified_by",
+    "package_id"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "item_id>item(id)",
+    "package_id>package(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "free_trial_settings": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "start_at": "date|notnull",
+    "end_at": "date|notnull",
+    "is_enabled": "bit|notnull",
+    "status": "varchar(20)|notnull",
+    "is_deleted": "bit|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "created_by": "varchar(200)|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(200)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "start_at",
+    "end_at",
+    "is_enabled",
+    "status",
+    "is_deleted",
+    "created_time",
+    "created_by",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "friend": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "space_id": "int|notnull",
+    "user_id_a": "uniqueidentifier|notnull",
+    "user_id_b": "uniqueidentifier|notnull",
+    "created_at": "datetime2(7)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "user_id_a",
+    "user_id_b",
+    "created_at",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "space_id>space(id)",
+    "user_id_a>user(id)",
+    "user_id_b>user(id)"
+   ],
+   "uq": []
+  },
+  "friend_notification": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "space_id": "int|notnull",
+    "recipient_id": "uniqueidentifier|notnull",
+    "sender_id": "uniqueidentifier|notnull",
+    "notification_type_id": "int|notnull",
+    "reference_id": "uniqueidentifier|null",
+    "is_read": "bit|notnull",
+    "created_at": "datetime2(7)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "recipient_id",
+    "sender_id",
+    "notification_type_id",
+    "reference_id",
+    "is_read",
+    "created_at",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "notification_type_id>friend_notification_type(id)",
+    "recipient_id>user(id)",
+    "sender_id>user(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "friend_notification_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type_name": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type_name",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "friend_request": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "space_id": "int|notnull",
+    "sender_id": "uniqueidentifier|notnull",
+    "receiver_id": "uniqueidentifier|notnull",
+    "status_id": "int|notnull",
+    "sent_at": "datetime2(7)|notnull",
+    "responded_at": "datetime2(7)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "sender_id",
+    "receiver_id",
+    "status_id",
+    "sent_at",
+    "responded_at",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "receiver_id>user(id)",
+    "sender_id>user(id)",
+    "space_id>space(id)",
+    "status_id>friend_request_status(id)"
+   ],
+   "uq": []
+  },
+  "friend_request_status": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "status": "varchar(32)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "status",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "game": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "name_key": "char(36)|notnull",
+    "description_key": "char(36)|null",
+    "sort_order": "smallint|notnull",
+    "is_active": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "game_code": "varchar(50)|notnull",
+    "max_score": "int|null"
+   },
+   "order": [
+    "id",
+    "name_key",
+    "description_key",
+    "sort_order",
+    "is_active",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "game_code",
+    "max_score"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "game_announcement": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "game_id": "int|notnull",
+    "name": "varchar(200)|notnull",
+    "announcement_type": "varchar(10)|notnull",
+    "start_date": "date|notnull",
+    "end_date": "date|notnull",
+    "top_count": "int|notnull",
+    "announcement_date": "date|null",
+    "status": "varchar(20)|notnull",
+    "is_deleted": "bit|notnull",
+    "created_by": "varchar(200)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(200)|notnull",
+    "modified_time": "datetime2(7)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "game_id",
+    "name",
+    "announcement_type",
+    "start_date",
+    "end_date",
+    "top_count",
+    "announcement_date",
+    "status",
+    "is_deleted",
+    "created_by",
+    "created_time",
+    "modified_by",
+    "modified_time"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "game_id>game(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "game_announcement_prize_pack": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "announcement_id": "int|notnull",
+    "item_id": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_by": "varchar(200)|notnull",
+    "modified_time": "datetime2(7)|notnull"
+   },
+   "order": [
+    "id",
+    "announcement_id",
+    "item_id",
+    "is_deleted",
+    "modified_by",
+    "modified_time"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "announcement_id>game_announcement(id)",
+    "item_id>item(id)"
+   ],
+   "uq": []
+  },
+  "game_announcement_user_prize": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "announcement_id": "int|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "item_id": "int|notnull",
+    "quantity": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_by": "varchar(200)|notnull",
+    "modified_time": "datetime2(7)|notnull"
+   },
+   "order": [
+    "id",
+    "announcement_id",
+    "user_id",
+    "item_id",
+    "quantity",
+    "is_deleted",
+    "modified_by",
+    "modified_time"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "announcement_id>game_announcement(id)",
+    "item_id>item(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "game_announcement_winner": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "announcement_id": "int|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "rank": "int|notnull",
+    "score": "bigint|notnull",
+    "games_played": "int|notnull",
+    "granted_order_id": "uniqueidentifier|null",
+    "granted_time": "datetime2(7)|notnull",
+    "granted_by": "varchar(200)|notnull",
+    "is_deleted": "bit|notnull"
+   },
+   "order": [
+    "id",
+    "announcement_id",
+    "user_id",
+    "rank",
+    "score",
+    "games_played",
+    "granted_order_id",
+    "granted_time",
+    "granted_by",
+    "is_deleted"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "announcement_id>game_announcement(id)",
+    "granted_order_id>orders(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "game_badges": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "badge_id": "int|notnull",
+    "game_id": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "badge_id",
+    "game_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "badge_id>badge(id)",
+    "game_id>game(id)"
+   ],
+   "uq": []
+  },
+  "game_difficulty": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "level": "smallint|notnull",
+    "level_key": "char(36)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "level",
+    "level_key",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "game_option": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "game_id": "int|notnull",
+    "option_text_id": "int|notnull",
+    "is_correct": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "game_id",
+    "option_text_id",
+    "is_correct",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "game_id>game(id)",
+    "option_text_id>option_text(id)"
+   ],
+   "uq": []
+  },
+  "gateway_event_log": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "payment_gateway_id": "int|notnull",
+    "provider_event_id": "varchar(128)|notnull",
+    "event_type": "varchar(128)|notnull",
+    "related_intent_id": "uniqueidentifier|null",
+    "related_charge_id": "uniqueidentifier|null",
+    "related_refund_id": "uniqueidentifier|null",
+    "payload": "nvarchar(max)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "payment_gateway_id",
+    "provider_event_id",
+    "event_type",
+    "related_intent_id",
+    "related_charge_id",
+    "related_refund_id",
+    "payload",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "payment_gateway_id>payment_gateway(id)",
+    "related_charge_id>payment_charge(id)",
+    "related_intent_id>payment_intent(id)",
+    "related_refund_id>payment_refund(id)"
+   ],
+   "uq": []
+  },
+  "geolocation": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "latitude": "decimal(8,6)|null",
+    "longitude": "decimal(9,6)|null",
+    "region_id": "int|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "latitude",
+    "longitude",
+    "region_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "region_id>region(id)"
+   ],
+   "uq": []
+  },
+  "global_ccu_settings": {
+   "cols": {
+    "id": "int|notnull",
+    "global_max_normal": "int|notnull",
+    "global_max_absolute": "int|notnull",
+    "max_players_per_room": "int|notnull",
+    "inactivity_timeout_seconds": "int|notnull",
+    "max_session_timer_seconds": "int|notnull",
+    "modified_by": "nvarchar(100)|notnull",
+    "modified_time": "datetime2(7)|notnull"
+   },
+   "order": [
+    "id",
+    "global_max_normal",
+    "global_max_absolute",
+    "max_players_per_room",
+    "inactivity_timeout_seconds",
+    "max_session_timer_seconds",
+    "modified_by",
+    "modified_time"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "guess_player_game": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "game_id": "int|notnull",
+    "personality_id": "int|notnull",
+    "media_id": "bigint|notnull",
+    "difficulty_id": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "game_id",
+    "personality_id",
+    "media_id",
+    "difficulty_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "difficulty_id>game_difficulty(id)",
+    "game_id>game(id)",
+    "media_id>media(id)",
+    "personality_id>personality(id)"
+   ],
+   "uq": []
+  },
+  "guess_player_game_clue": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "guess_player_game_id": "int|notnull",
+    "clue_key": "char(36)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "guess_player_game_id",
+    "clue_key",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "guess_player_game_id>guess_player_game(id)"
+   ],
+   "uq": []
+  },
+  "hosting": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "name_key": "uniqueidentifier|notnull",
+    "stream_url": "nvarchar(2048)|notnull",
+    "is_active": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "status": "varchar(20)|notnull",
+    "event_id": "int|null"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "name_key",
+    "stream_url",
+    "is_active",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time",
+    "status",
+    "event_id"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "event_id>event(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "i18n": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "space_id": "int|null",
+    "locale_id": "varchar(10)|notnull",
+    "key": "uniqueidentifier|notnull",
+    "value": "varchar(max)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "created_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "locale_id",
+    "key",
+    "value",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_time",
+    "created_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "locale_id>i18n_locale(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "i18n_locale": {
+   "cols": {
+    "id": "varchar(10)|notnull",
+    "language_name": "nvarchar(max)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "language_name",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "image_data": {
+   "cols": {
+    "tbl_name": "varchar(255)|null",
+    "row_count": "int|null"
+   },
+   "order": [
+    "tbl_name",
+    "row_count"
+   ],
+   "pk": [],
+   "fks": [],
+   "uq": []
+  },
+  "invoice": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "space_id": "int|notnull",
+    "invoice_number": "varchar(64)|notnull",
+    "status_id": "int|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "order_id": "uniqueidentifier|null",
+    "subscription_id": "char(36)|null",
+    "payment_charge_id": "uniqueidentifier|notnull",
+    "payment_gateway_id": "int|notnull",
+    "provider_charge_id": "varchar(128)|null",
+    "issue_datetime": "datetime2(7)|notnull",
+    "currency_id": "int|notnull",
+    "subtotal_amount": "bigint|null",
+    "discount_amount": "bigint|null",
+    "tax_amount": "bigint|null",
+    "fee_amount": "bigint|null",
+    "total_amount": "bigint|notnull",
+    "bill_to_name": "varchar(128)|null",
+    "bill_to_email": "varchar(255)|null",
+    "notes": "varchar(255)|null",
+    "pdf_url": "varchar(255)|null",
+    "metadata": "nvarchar(max)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "invoice_number",
+    "status_id",
+    "user_id",
+    "order_id",
+    "subscription_id",
+    "payment_charge_id",
+    "payment_gateway_id",
+    "provider_charge_id",
+    "issue_datetime",
+    "currency_id",
+    "subtotal_amount",
+    "discount_amount",
+    "tax_amount",
+    "fee_amount",
+    "total_amount",
+    "bill_to_name",
+    "bill_to_email",
+    "notes",
+    "pdf_url",
+    "metadata",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "currency_id>currency(id)",
+    "order_id>orders(id)",
+    "payment_charge_id>payment_charge(id)",
+    "payment_gateway_id>payment_gateway(id)",
+    "space_id>space(id)",
+    "status_id>invoice_status(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "invoice_line_item": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "invoice_id": "uniqueidentifier|notnull",
+    "item_type_id": "int|notnull",
+    "item_ref_id": "char(36)|null",
+    "description_key": "char(36)|null",
+    "quantity": "int|notnull",
+    "unit_amount": "bigint|notnull",
+    "amount": "bigint|notnull",
+    "currency_id": "int|notnull",
+    "metadata": "nvarchar(max)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull"
+   },
+   "order": [
+    "id",
+    "invoice_id",
+    "item_type_id",
+    "item_ref_id",
+    "description_key",
+    "quantity",
+    "unit_amount",
+    "amount",
+    "currency_id",
+    "metadata",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "currency_id>currency(id)",
+    "invoice_id>invoice(id)",
+    "item_type_id>item_type(id)"
+   ],
+   "uq": []
+  },
+  "invoice_status": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "status": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "status",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "item": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "item_type_id": "int|notnull",
+    "entity_id": "int|null",
+    "space_id": "int|notnull",
+    "name_key": "char(36)|notnull",
+    "description_key": "char(36)|null",
+    "is_available": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "tax_category_id": "int|null",
+    "tax_is_inclusive": "bit|null",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "status": "varchar(20)|notnull",
+    "is_price_only": "bit|notnull"
+   },
+   "order": [
+    "id",
+    "item_type_id",
+    "entity_id",
+    "space_id",
+    "name_key",
+    "description_key",
+    "is_available",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "tax_category_id",
+    "tax_is_inclusive",
+    "created_by",
+    "created_time",
+    "status",
+    "is_price_only"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "entity_id>entity(id)",
+    "item_type_id>item_type(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "item_discounts": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "item_id": "int|notnull",
+    "discount_id": "int|notnull",
+    "region_id": "int|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "created_by": "varchar(100)|notnull"
+   },
+   "order": [
+    "id",
+    "item_id",
+    "discount_id",
+    "region_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_time",
+    "created_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "discount_id>discounts(id)",
+    "item_id>item(id)",
+    "region_id>region(id)"
+   ],
+   "uq": []
+  },
+  "item_prices": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "item_id": "int|notnull",
+    "base_cost": "bigint|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "currency_id": "int|notnull"
+   },
+   "order": [
+    "id",
+    "item_id",
+    "base_cost",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "currency_id"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "currency_id>currency(id)",
+    "item_id>item(id)"
+   ],
+   "uq": []
+  },
+  "item_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "light_config": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "name_key": "char(36)|notnull",
+    "description_key": "char(36)|notnull",
+    "thumbnail_media_id": "bigint|null",
+    "is_active": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "name_key",
+    "description_key",
+    "thumbnail_media_id",
+    "is_active",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "thumbnail_media_id>media(id)"
+   ],
+   "uq": []
+  },
+  "login_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type": "varchar(50)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "map_spot": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "x": "decimal(18,2)|notnull",
+    "y": "decimal(18,2)|notnull",
+    "z": "decimal(18,2)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "x",
+    "y",
+    "z",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "media": {
+   "cols": {
+    "id": "bigint|notnull|identity",
+    "space_id": "int|notnull",
+    "media_type_id": "int|notnull",
+    "text_key": "uniqueidentifier|null",
+    "description_key": "uniqueidentifier|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "created_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "media_type_id",
+    "text_key",
+    "description_key",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_time",
+    "created_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "media_type_id>media_type(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "media_localization": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "media_id": "bigint|notnull",
+    "locale_id": "varchar(10)|notnull",
+    "media_link": "varchar(255)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "created_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "media_id",
+    "locale_id",
+    "media_link",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_time",
+    "created_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "locale_id>i18n_locale(id)",
+    "media_id>media(id)"
+   ],
+   "uq": []
+  },
+  "media_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "merchandise": {
+   "cols": {
+    "id": "int|notnull",
+    "merchandise_type_id": "int|notnull",
+    "merchandise_category_id": "int|null",
+    "asset_url": "varchar(255)|notnull",
+    "thumbnail_media_id": "bigint|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "merchandise_type_id",
+    "merchandise_category_id",
+    "asset_url",
+    "thumbnail_media_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "id>item(id)",
+    "merchandise_category_id>merchandise_category(id)",
+    "merchandise_type_id>merchandise_type(id)",
+    "thumbnail_media_id>media(id)"
+   ],
+   "uq": []
+  },
+  "merchandise_category": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "category": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "category",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "merchandise_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "position": "varchar(50)|null",
+    "interaction": "varchar(50)|null"
+   },
+   "order": [
+    "id",
+    "type",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "position",
+    "interaction"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "metric_idempotency_key": {
+   "cols": {
+    "idempotency_key": "varchar(128)|notnull",
+    "status": "varchar(20)|notnull",
+    "event_type": "varchar(64)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "modified_time": "datetime2(7)|notnull"
+   },
+   "order": [
+    "idempotency_key",
+    "status",
+    "event_type",
+    "created_time",
+    "modified_time"
+   ],
+   "pk": [
+    "idempotency_key"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "option_text": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "option_key": "char(36)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "option_key",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "order_adjustment": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "order_id": "uniqueidentifier|notnull",
+    "order_line_item_id": "uniqueidentifier|null",
+    "adjustment_type_id": "smallint|notnull",
+    "code": "varchar(64)|null",
+    "amount": "bigint|notnull",
+    "description_key": "varchar(255)|null",
+    "metadata": "nvarchar(max)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "tax_category_id": "int|null",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull"
+   },
+   "order": [
+    "id",
+    "order_id",
+    "order_line_item_id",
+    "adjustment_type_id",
+    "code",
+    "amount",
+    "description_key",
+    "metadata",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "tax_category_id",
+    "created_by",
+    "created_time"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "adjustment_type_id>order_adjustment_type(id)",
+    "order_id>orders(id)",
+    "order_line_item_id>order_line_item(id)"
+   ],
+   "uq": []
+  },
+  "order_adjustment_type": {
+   "cols": {
+    "id": "smallint|notnull|identity",
+    "type": "varchar(50)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "order_line_item": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "order_id": "uniqueidentifier|notnull",
+    "item_type_id": "int|notnull",
+    "item_ref_id": "char(36)|notnull",
+    "shop_id": "int|null",
+    "quantity": "int|notnull",
+    "unit_amount": "bigint|notnull",
+    "metadata": "nvarchar(max)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "package_id": "int|null"
+   },
+   "order": [
+    "id",
+    "order_id",
+    "item_type_id",
+    "item_ref_id",
+    "shop_id",
+    "quantity",
+    "unit_amount",
+    "metadata",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time",
+    "package_id"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "item_type_id>item_type(id)",
+    "order_id>orders(id)",
+    "shop_id>shop(id)"
+   ],
+   "uq": []
+  },
+  "order_status": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "status": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "status",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "orders": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "space_id": "int|notnull",
+    "transaction_type_id": "int|notnull",
+    "currency_id": "int|notnull",
+    "status_id": "int|notnull",
+    "total_gross_amount": "bigint|notnull",
+    "total_discount_amount": "bigint|notnull",
+    "change_reason": "varchar(255)|null",
+    "total_tax_amount": "bigint|notnull",
+    "total_fee_amount": "bigint|notnull",
+    "total_net_amount": "bigint|notnull",
+    "original_order_id": "char(36)|null",
+    "session_id": "char(36)|notnull",
+    "gateway_preferred_id": "int|null",
+    "order_datetime": "datetime2(7)|notnull",
+    "remarks": "varchar(255)|null",
+    "idempotency_key": "varchar(64)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull"
+   },
+   "order": [
+    "id",
+    "user_id",
+    "space_id",
+    "transaction_type_id",
+    "currency_id",
+    "status_id",
+    "total_gross_amount",
+    "total_discount_amount",
+    "change_reason",
+    "total_tax_amount",
+    "total_fee_amount",
+    "total_net_amount",
+    "original_order_id",
+    "session_id",
+    "gateway_preferred_id",
+    "order_datetime",
+    "remarks",
+    "idempotency_key",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "currency_id>currency(id)",
+    "gateway_preferred_id>payment_gateway(id)",
+    "space_id>space(id)",
+    "status_id>order_status(id)",
+    "transaction_type_id>transaction_type(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "package": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "name_key": "uniqueidentifier|notnull",
+    "description_key": "uniqueidentifier|null",
+    "thumbnail_media_id": "bigint|notnull",
+    "base_cost": "bigint|notnull",
+    "currency_id": "int|notnull",
+    "tax_category_id": "int|null",
+    "tax_is_inclusive": "bit|null",
+    "is_available": "bit|notnull",
+    "status": "varchar(20)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "name_key",
+    "description_key",
+    "thumbnail_media_id",
+    "base_cost",
+    "currency_id",
+    "tax_category_id",
+    "tax_is_inclusive",
+    "is_available",
+    "status",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "tax_category_id>tax_category(id)",
+    "thumbnail_media_id>media(id)"
+   ],
+   "uq": []
+  },
+  "package_item": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "package_id": "int|notnull",
+    "item_id": "int|notnull",
+    "quantity": "int|notnull",
+    "status": "varchar(20)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "package_id",
+    "item_id",
+    "quantity",
+    "status",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "item_id>item(id)",
+    "package_id>package(id)"
+   ],
+   "uq": []
+  },
+  "payment_audit_log": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "order_id": "uniqueidentifier|null",
+    "source_table": "varchar(64)|notnull",
+    "source_row_id": "char(36)|notnull",
+    "column_name": "varchar(255)|notnull",
+    "old_value": "varchar(255)|null",
+    "new_value": "varchar(255)|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "change_reason": "varchar(255)|null",
+    "changed_by": "varchar(200)|notnull"
+   },
+   "order": [
+    "id",
+    "order_id",
+    "source_table",
+    "source_row_id",
+    "column_name",
+    "old_value",
+    "new_value",
+    "modified_time",
+    "modified_by",
+    "change_reason",
+    "changed_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "payment_charge": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "payment_intent_id": "uniqueidentifier|notnull",
+    "status_id": "int|notnull",
+    "amount_captured": "bigint|notnull",
+    "currency_id": "int|notnull",
+    "provider_charge_id": "varchar(128)|null",
+    "gateway_fee_amount": "bigint|null",
+    "exchange_rate": "decimal(18,6)|null",
+    "payment_datetime": "datetime2(7)|notnull",
+    "metadata": "nvarchar(max)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "payer_email": "varchar(255)|null",
+    "payer_id": "varchar(128)|null",
+    "payment_method_type": "varchar(50)|null",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "contract_percentage_applied": "decimal(5,2)|null",
+    "merchant_net_amount": "bigint|null",
+    "merchant_net_currency_id": "int|null",
+    "deposit_id": "varchar(64)|null"
+   },
+   "order": [
+    "id",
+    "payment_intent_id",
+    "status_id",
+    "amount_captured",
+    "currency_id",
+    "provider_charge_id",
+    "gateway_fee_amount",
+    "exchange_rate",
+    "payment_datetime",
+    "metadata",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "payer_email",
+    "payer_id",
+    "payment_method_type",
+    "created_by",
+    "created_time",
+    "contract_percentage_applied",
+    "merchant_net_amount",
+    "merchant_net_currency_id",
+    "deposit_id"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "currency_id>currency(id)",
+    "merchant_net_currency_id>currency(id)",
+    "payment_intent_id>payment_intent(id)",
+    "status_id>payment_status(id)"
+   ],
+   "uq": []
+  },
+  "payment_deposit": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "deposit_id": "varchar(64)|notnull",
+    "space_id": "int|notnull",
+    "document_blob_path": "varchar(500)|null",
+    "document_original_file_name": "varchar(255)|null",
+    "document_content_type": "varchar(100)|null",
+    "document_file_extension": "varchar(10)|null",
+    "document_file_size_bytes": "bigint|null",
+    "document_uploaded_by": "varchar(128)|null",
+    "document_uploaded_at": "datetime2(7)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(128)|notnull"
+   },
+   "order": [
+    "id",
+    "deposit_id",
+    "space_id",
+    "document_blob_path",
+    "document_original_file_name",
+    "document_content_type",
+    "document_file_extension",
+    "document_file_size_bytes",
+    "document_uploaded_by",
+    "document_uploaded_at",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "payment_destination": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "payment_gateway_id": "int|notnull",
+    "destination_ref": "varchar(128)|notnull",
+    "currency_id": "int|notnull",
+    "network": "varchar(64)|null",
+    "metadata": "nvarchar(max)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "payment_gateway_id",
+    "destination_ref",
+    "currency_id",
+    "network",
+    "metadata",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "currency_id>currency(id)",
+    "payment_gateway_id>payment_gateway(id)"
+   ],
+   "uq": []
+  },
+  "payment_dispute": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "payment_charge_id": "uniqueidentifier|notnull",
+    "status_id": "int|notnull",
+    "amount": "bigint|notnull",
+    "currency_id": "int|notnull",
+    "provider_dispute_id": "varchar(128)|null",
+    "opened_datetime": "datetime2(7)|notnull",
+    "closed_datetime": "datetime2(7)|null",
+    "metadata": "nvarchar(max)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "payment_charge_id",
+    "status_id",
+    "amount",
+    "currency_id",
+    "provider_dispute_id",
+    "opened_datetime",
+    "closed_datetime",
+    "metadata",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "currency_id>currency(id)",
+    "payment_charge_id>payment_charge(id)",
+    "status_id>dispute_status(id)"
+   ],
+   "uq": []
+  },
+  "payment_gateway": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "payment_gateway": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "payment_gateway",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "payment_gateway_config": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "charity_id": "int|null",
+    "payment_gateway_id": "int|notnull",
+    "encrypted_client_id": "nvarchar(max)|notnull",
+    "encrypted_secret_key": "nvarchar(max)|notnull",
+    "is_enabled": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "status": "varchar(20)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "charity_id",
+    "payment_gateway_id",
+    "encrypted_client_id",
+    "encrypted_secret_key",
+    "is_enabled",
+    "is_deleted",
+    "created_time",
+    "created_by",
+    "modified_time",
+    "modified_by",
+    "status"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "charity_id>charity(id)",
+    "payment_gateway_id>payment_gateway(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "payment_gateway_config_currency": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "payment_gateway_config_id": "int|notnull",
+    "currency_id": "int|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "payment_gateway_config_id",
+    "currency_id",
+    "created_time",
+    "created_by",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "currency_id>currency(id)",
+    "payment_gateway_config_id>payment_gateway_config(id)"
+   ],
+   "uq": []
+  },
+  "payment_intent": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "order_id": "uniqueidentifier|notnull",
+    "payment_method_type_id": "int|null",
+    "payment_gateway_id": "int|notnull",
+    "status_id": "int|notnull",
+    "amount": "bigint|notnull",
+    "currency_id": "int|notnull",
+    "client_secret": "varchar(128)|null",
+    "provider_intent_id": "varchar(128)|null",
+    "idempotency_key": "varchar(255)|null",
+    "metadata": "nvarchar(max)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "order_id",
+    "payment_method_type_id",
+    "payment_gateway_id",
+    "status_id",
+    "amount",
+    "currency_id",
+    "client_secret",
+    "provider_intent_id",
+    "idempotency_key",
+    "metadata",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "currency_id>currency(id)",
+    "order_id>orders(id)",
+    "payment_gateway_id>payment_gateway(id)",
+    "payment_method_type_id>payment_method_type(id)",
+    "status_id>payment_status(id)"
+   ],
+   "uq": []
+  },
+  "payment_method_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "payment_refund": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "payment_charge_id": "uniqueidentifier|notnull",
+    "status_id": "int|notnull",
+    "idempotency_key": "varchar(50)|null",
+    "currency_id": "int|notnull",
+    "amount": "bigint|notnull",
+    "provider_refund_id": "varchar(128)|null",
+    "reason": "varchar(255)|null",
+    "refund_datetime": "datetime2(7)|notnull",
+    "metadata": "nvarchar(max)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull"
+   },
+   "order": [
+    "id",
+    "payment_charge_id",
+    "status_id",
+    "idempotency_key",
+    "currency_id",
+    "amount",
+    "provider_refund_id",
+    "reason",
+    "refund_datetime",
+    "metadata",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "currency_id>currency(id)",
+    "payment_charge_id>payment_charge(id)",
+    "status_id>refund_status(id)"
+   ],
+   "uq": []
+  },
+  "payment_status": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "status": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "status",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "pending_invitation": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|null",
+    "email": "varchar(256)|notnull",
+    "invited_by": "uniqueidentifier|notnull",
+    "token": "varchar(64)|notnull",
+    "expires_at": "datetime2(7)|notnull",
+    "accepted_at": "datetime2(7)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "entity_id": "int|null",
+    "role_id": "int|notnull",
+    "name": "varchar(64)|null"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "email",
+    "invited_by",
+    "token",
+    "expires_at",
+    "accepted_at",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time",
+    "entity_id",
+    "role_id",
+    "name"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "invited_by>user(id)",
+    "role_id>role(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "personality": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "full_name": "varchar(255)|notnull",
+    "sport_id": "int|null",
+    "entity_id": "int|null",
+    "country_name_key": "char(36)|null",
+    "bio_data_key": "char(36)|null",
+    "media_id": "bigint|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull"
+   },
+   "order": [
+    "id",
+    "full_name",
+    "sport_id",
+    "entity_id",
+    "country_name_key",
+    "bio_data_key",
+    "media_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "entity_id>entity(id)",
+    "media_id>media(id)",
+    "sport_id>sport(id)"
+   ],
+   "uq": []
+  },
+  "platform_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "platform_name": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "platform_name",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "portal": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "booth_id": "int|null",
+    "portal_type_id": "int|notnull",
+    "event_id": "int|null",
+    "corresponding_media_id": "bigint|notnull",
+    "text_field_key": "uniqueidentifier|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "status": "varchar(20)|notnull",
+    "ad_id": "int|null"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "booth_id",
+    "portal_type_id",
+    "event_id",
+    "corresponding_media_id",
+    "text_field_key",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_time",
+    "created_by",
+    "status",
+    "ad_id"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "ad_id>advertiser_ad(id)",
+    "booth_id>booth(id)",
+    "corresponding_media_id>media(id)",
+    "event_id>event(id)",
+    "portal_type_id>portal_type(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "portal_access_mtx": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "space_id": "int|notnull",
+    "portal_id": "int|notnull",
+    "session_id": "uniqueidentifier|notnull",
+    "portal_type_id": "int|notnull",
+    "media_id": "bigint|notnull",
+    "portal_link": "varchar(255)|notnull",
+    "media_link": "varchar(255)|notnull",
+    "thumbnail_link": "varchar(255)|notnull",
+    "access_time": "datetime2(7)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "user_id",
+    "space_id",
+    "portal_id",
+    "session_id",
+    "portal_type_id",
+    "media_id",
+    "portal_link",
+    "media_link",
+    "thumbnail_link",
+    "access_time",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "media_id>media(id)",
+    "portal_id>portal(id)",
+    "portal_type_id>portal_type(id)",
+    "session_id>user_session_management(id)",
+    "space_id>space(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "portal_link": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "portal_id": "int|notnull",
+    "position_id": "int|null",
+    "external_link": "varchar(255)|null",
+    "thumbnail_media_id": "bigint|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "status": "varchar(20)|notnull"
+   },
+   "order": [
+    "id",
+    "portal_id",
+    "position_id",
+    "external_link",
+    "thumbnail_media_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_time",
+    "created_by",
+    "status"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "portal_id>portal(id)",
+    "position_id>portal_position(id)",
+    "thumbnail_media_id>media(id)"
+   ],
+   "uq": []
+  },
+  "portal_position": {
+   "cols": {
+    "id": "int|notnull",
+    "name": "varchar(50)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "name",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "portal_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type": "varchar(64)|notnull",
+    "code": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type",
+    "code",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "predefined_comments": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "comment_key": "char(36)|notnull",
+    "is_active": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "status": "varchar(20)|notnull"
+   },
+   "order": [
+    "id",
+    "comment_key",
+    "is_active",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "status"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "predict_match_game": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "game_id": "int|notnull",
+    "home_entity_id": "int|notnull",
+    "away_entity_id": "int|notnull",
+    "scheduled_date": "datetime2(7)|notnull",
+    "result": "int|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "game_id",
+    "home_entity_id",
+    "away_entity_id",
+    "scheduled_date",
+    "result",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "away_entity_id>entity(id)",
+    "game_id>game(id)",
+    "home_entity_id>entity(id)"
+   ],
+   "uq": []
+  },
+  "re_comparator": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "code": "varchar(50)|notnull",
+    "ui_label": "varchar(64)|null",
+    "supported_types": "varchar(64)|notnull",
+    "engine_format": "nvarchar(max)|notnull",
+    "value_arity": "int|notnull",
+    "case_sensitive": "bit|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "code",
+    "ui_label",
+    "supported_types",
+    "engine_format",
+    "value_arity",
+    "case_sensitive",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "re_context_parameter": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "key": "varchar(50)|notnull",
+    "source": "varchar(64)|notnull",
+    "path": "nvarchar(max)|notnull",
+    "re_path_type_id": "int|notnull",
+    "data_type": "varchar(255)|notnull",
+    "ui_label": "varchar(64)|notnull",
+    "ui_help_key": "char(36)|notnull",
+    "unit": "varchar(50)|null",
+    "re_dropdown_value_provider_id": "int|null",
+    "example_value": "varchar(50)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "key",
+    "source",
+    "path",
+    "re_path_type_id",
+    "data_type",
+    "ui_label",
+    "ui_help_key",
+    "unit",
+    "re_dropdown_value_provider_id",
+    "example_value",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "re_dropdown_value_provider_id>re_dropdown_value_provider(id)",
+    "re_path_type_id>re_path_type(id)"
+   ],
+   "uq": []
+  },
+  "re_dropdown_value_provider": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "re_provider_type_id": "int|notnull",
+    "config_json": "json|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "re_provider_type_id",
+    "config_json",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "re_provider_type_id>re_provider_type(id)"
+   ],
+   "uq": []
+  },
+  "re_event_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "name": "varchar(50)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "name",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "re_event_type_parameter": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "re_event_type_id": "int|notnull",
+    "parameter_id": "int|notnull",
+    "is_required": "bit|notnull",
+    "default_value_json": "json|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "re_event_type_id",
+    "parameter_id",
+    "is_required",
+    "default_value_json",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "parameter_id>re_context_parameter(id)",
+    "re_event_type_id>re_event_type(id)"
+   ],
+   "uq": []
+  },
+  "re_events": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "target_user_id": "uniqueidentifier|null",
+    "re_event_type_id": "int|notnull",
+    "actor_user_id": "uniqueidentifier|null",
+    "content_ref": "varchar(255)|null",
+    "content_owner_user_id": "uniqueidentifier|null",
+    "occurred_at": "datetime2(7)|notnull",
+    "properties_json": "nvarchar(max)|null",
+    "ingested_at": "datetime2(7)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "target_user_id",
+    "re_event_type_id",
+    "actor_user_id",
+    "content_ref",
+    "content_owner_user_id",
+    "occurred_at",
+    "properties_json",
+    "ingested_at",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "actor_user_id>user(id)",
+    "content_owner_user_id>user(id)",
+    "re_event_type_id>re_event_type(id)",
+    "space_id>space(id)",
+    "target_user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "re_logical_operator": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "code": "varchar(50)|notnull",
+    "ui_label": "varchar(64)|null",
+    "engine_symbol": "char(5)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "code",
+    "ui_label",
+    "engine_symbol",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "re_moderation_action_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type": "varchar(50)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "re_moderation_target_selector": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type": "varchar(50)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "re_moderation_target_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type": "varchar(50)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "re_path_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "code": "varchar(50)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "code",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "re_provider_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type": "varchar(50)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "refund_status": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "status": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "status",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "region": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "localized_continent_name_key": "char(36)|null",
+    "localized_country_name_key": "char(36)|notnull",
+    "localized_city_key": "char(36)|null",
+    "code": "char(3)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "localized_continent_name_key",
+    "localized_country_name_key",
+    "localized_city_key",
+    "code",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "regional_currency": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "region_id": "int|notnull",
+    "currency_id": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "region_id",
+    "currency_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "region_id>region(id)"
+   ],
+   "uq": []
+  },
+  "reward": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "reward_composition_type_id": "int|notnull",
+    "name_key": "char(36)|notnull",
+    "description_key": "char(36)|null",
+    "space_id": "int|notnull",
+    "entity_id": "int|null",
+    "max_total_claims": "int|null",
+    "max_claims_per_user": "int|null",
+    "cooldown_seconds": "int|null",
+    "claim_required": "bit|notnull",
+    "is_active": "bit|notnull",
+    "valid_from": "datetime2(7)|null",
+    "valid_to": "datetime2(7)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "status": "varchar(20)|notnull"
+   },
+   "order": [
+    "id",
+    "reward_composition_type_id",
+    "name_key",
+    "description_key",
+    "space_id",
+    "entity_id",
+    "max_total_claims",
+    "max_claims_per_user",
+    "cooldown_seconds",
+    "claim_required",
+    "is_active",
+    "valid_from",
+    "valid_to",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time",
+    "status"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "entity_id>entity(id)",
+    "reward_composition_type_id>reward_composition_type(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "reward_composition_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "reward_currency": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "reward_id": "int|notnull",
+    "currency_id": "int|notnull",
+    "amount": "bigint|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "reward_id",
+    "currency_id",
+    "amount",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "reward_id>reward(id)"
+   ],
+   "uq": []
+  },
+  "reward_item": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "reward_id": "int|notnull",
+    "item_id": "int|notnull",
+    "quantity": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "reward_id",
+    "item_id",
+    "quantity",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "item_id>item(id)",
+    "reward_id>reward(id)"
+   ],
+   "uq": []
+  },
+  "reward_status": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "status": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "status",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "role": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "name": "varchar(50)|notnull",
+    "scope": "varchar(20)|notnull",
+    "description": "varchar(255)|null",
+    "is_deleted": "bit|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull"
+   },
+   "order": [
+    "id",
+    "name",
+    "scope",
+    "description",
+    "is_deleted",
+    "created_by",
+    "created_time"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "rule_action_moderation": {
+   "cols": {
+    "id": "int|notnull",
+    "re_moderation_action_type_id": "int|notnull",
+    "moderation_target_type_id": "int|notnull",
+    "re_moderation_target_selector_id": "int|notnull",
+    "content_ref_template": "varchar(255)|null",
+    "duration_seconds": "int|null",
+    "reason_code": "varchar(64)|null",
+    "message_template_key": "char(36)|null",
+    "silent": "bit|null",
+    "auto_escalate": "bit|notnull",
+    "escalate_after_seconds": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "re_moderation_action_type_id",
+    "moderation_target_type_id",
+    "re_moderation_target_selector_id",
+    "content_ref_template",
+    "duration_seconds",
+    "reason_code",
+    "message_template_key",
+    "silent",
+    "auto_escalate",
+    "escalate_after_seconds",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "id>rule_actions(id)",
+    "moderation_target_type_id>re_moderation_target_type(id)",
+    "re_moderation_action_type_id>re_moderation_action_type(id)",
+    "re_moderation_target_selector_id>re_moderation_target_selector(id)"
+   ],
+   "uq": []
+  },
+  "rule_action_reward": {
+   "cols": {
+    "id": "int|notnull",
+    "reward_id": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "reward_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "id>rule_actions(id)",
+    "reward_id>reward(id)"
+   ],
+   "uq": []
+  },
+  "rule_action_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "code": "int|notnull",
+    "label": "char(36)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "code",
+    "label",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "rule_actions": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "rule_id": "int|notnull",
+    "action_type_id": "int|notnull",
+    "action_name": "varchar(64)|notnull",
+    "action_key": "varchar(64)|notnull",
+    "action_parameters_json": "json|notnull",
+    "action_target_ref": "varchar(255)|null",
+    "order_index": "int|notnull",
+    "is_active": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "rule_id",
+    "action_type_id",
+    "action_name",
+    "action_key",
+    "action_parameters_json",
+    "action_target_ref",
+    "order_index",
+    "is_active",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "action_type_id>rule_action_type(id)",
+    "rule_id>rules(id)"
+   ],
+   "uq": []
+  },
+  "rule_condition": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "group_id": "int|notnull",
+    "parameter_id": "int|notnull",
+    "comparator_id": "int|notnull",
+    "negate": "bit|notnull",
+    "right_value_kind": "varchar(64)|notnull",
+    "right_value_json": "json|null",
+    "order_index": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "group_id",
+    "parameter_id",
+    "comparator_id",
+    "negate",
+    "right_value_kind",
+    "right_value_json",
+    "order_index",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "comparator_id>re_comparator(id)",
+    "group_id>rule_condition_group(id)",
+    "parameter_id>re_context_parameter(id)"
+   ],
+   "uq": []
+  },
+  "rule_condition_group": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "rule_id": "int|notnull",
+    "parent_group_id": "int|null",
+    "logical_operator_id": "int|notnull",
+    "order_index": "int|notnull",
+    "name_key": "char(36)|null",
+    "description_key": "char(36)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "rule_id",
+    "parent_group_id",
+    "logical_operator_id",
+    "order_index",
+    "name_key",
+    "description_key",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "logical_operator_id>re_logical_operator(id)",
+    "parent_group_id>rule_condition_group(id)",
+    "rule_id>rules(id)"
+   ],
+   "uq": []
+  },
+  "rule_parameters": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "rule_id": "int|notnull",
+    "name": "varchar(64)|notnull",
+    "value_json": "nvarchar(max)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "rule_id",
+    "name",
+    "value_json",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "rule_id>rules(id)"
+   ],
+   "uq": []
+  },
+  "rules": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "workflow_id": "int|notnull",
+    "rule_name": "varchar(255)|notnull",
+    "expression": "nvarchar(max)|notnull",
+    "target_type": "varchar(64)|null",
+    "version": "int|null",
+    "parent_rule_id": "int|null",
+    "success_event": "varchar(64)|null",
+    "priority": "int|notnull",
+    "rule_cooldown_seconds": "int|notnull",
+    "state_type_id": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "status": "varchar(20)|notnull"
+   },
+   "order": [
+    "id",
+    "workflow_id",
+    "rule_name",
+    "expression",
+    "target_type",
+    "version",
+    "parent_rule_id",
+    "success_event",
+    "priority",
+    "rule_cooldown_seconds",
+    "state_type_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time",
+    "status"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "parent_rule_id>rules(id)",
+    "state_type_id>state_type(id)",
+    "workflow_id>workflow(id)"
+   ],
+   "uq": []
+  },
+  "selfie_jumbotron": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "user_id": "uniqueidentifier|notnull",
+    "space_id": "int|notnull",
+    "selfie_url": "varchar(255)|notnull",
+    "scheduled_time": "datetime2(7)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "user_id",
+    "space_id",
+    "selfie_url",
+    "scheduled_time",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "space_id>space(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "session_status": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "status": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "status",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "shop": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "platform_type_id": "int|notnull",
+    "space_id": "int|null",
+    "entity_id": "int|null",
+    "name_key": "char(36)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "platform_type_id",
+    "space_id",
+    "entity_id",
+    "name_key",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "entity_id>entity(id)",
+    "platform_type_id>platform_type(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "shop_items": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "shop_id": "int|notnull",
+    "item_id": "int|notnull",
+    "amount": "bigint|null",
+    "stock_quantity": "int|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "currency_id": "int|notnull"
+   },
+   "order": [
+    "id",
+    "shop_id",
+    "item_id",
+    "amount",
+    "stock_quantity",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "currency_id"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "currency_id>currency(id)",
+    "item_id>item(id)",
+    "shop_id>shop(id)"
+   ],
+   "uq": []
+  },
+  "space": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "platform_type_id": "int|notnull",
+    "entity_id": "int|notnull",
+    "sku": "varchar(64)|null",
+    "name_key": "char(36)|notnull",
+    "description_key": "char(36)|notnull",
+    "link": "varchar(255)|notnull",
+    "is_published": "bit|notnull",
+    "is_live": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "currency_id": "int|null",
+    "display_name": "varchar(255)|null",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "is_extra_ccu_enabled": "bit|notnull",
+    "active_ccu": "int|notnull",
+    "google_client_id": "varchar(255)|null"
+   },
+   "order": [
+    "id",
+    "platform_type_id",
+    "entity_id",
+    "sku",
+    "name_key",
+    "description_key",
+    "link",
+    "is_published",
+    "is_live",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "currency_id",
+    "display_name",
+    "created_by",
+    "created_time",
+    "is_extra_ccu_enabled",
+    "active_ccu",
+    "google_client_id"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "currency_id>currency(id)",
+    "platform_type_id>platform_type(id)"
+   ],
+   "uq": []
+  },
+  "space_config": {
+   "cols": {
+    "space_id": "int|notnull",
+    "payments": "bit|notnull",
+    "events": "bit|notnull",
+    "advertisers": "bit|notnull",
+    "ai_moderation": "bit|notnull",
+    "selfies": "bit|notnull",
+    "lighting": "bit|notnull",
+    "items": "bit|notnull",
+    "rewards": "bit|notnull",
+    "charities": "bit|notnull",
+    "subscriptions": "bit|notnull",
+    "recognition": "bit|notnull",
+    "api_version": "nvarchar(20)|notnull",
+    "modified_at": "datetime2(7)|notnull",
+    "modified_by": "int|null",
+    "booths": "bit|notnull",
+    "hosting": "bit|notnull",
+    "approvals": "bit|notnull"
+   },
+   "order": [
+    "space_id",
+    "payments",
+    "events",
+    "advertisers",
+    "ai_moderation",
+    "selfies",
+    "lighting",
+    "items",
+    "rewards",
+    "charities",
+    "subscriptions",
+    "recognition",
+    "api_version",
+    "modified_at",
+    "modified_by",
+    "booths",
+    "hosting",
+    "approvals"
+   ],
+   "pk": [
+    "space_id"
+   ],
+   "fks": [
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "space_lighting": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "light_config_id": "int|notnull",
+    "is_active": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "light_config_id",
+    "is_active",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "light_config_id>light_config(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "space_member": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "invited_by": "uniqueidentifier|null",
+    "joined_at": "datetime2(7)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "is_excluded_from_approval": "bit|notnull",
+    "approval_exclusion_changed_by": "varchar(36)|null",
+    "approval_exclusion_changed_at": "datetime2(7)|null"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "user_id",
+    "invited_by",
+    "joined_at",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time",
+    "is_excluded_from_approval",
+    "approval_exclusion_changed_by",
+    "approval_exclusion_changed_at"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "space_id>space(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "space_member_role": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_member_id": "int|notnull",
+    "role_id": "int|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull"
+   },
+   "order": [
+    "id",
+    "space_member_id",
+    "role_id",
+    "created_by",
+    "created_time"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "role_id>role(id)",
+    "space_member_id>space_member(id)"
+   ],
+   "uq": []
+  },
+  "sport": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "sport": "varchar(64)|notnull",
+    "code": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "sport",
+    "code",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "state_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type": "varchar(50)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "supported_languages": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|null",
+    "event_id": "int|null",
+    "locale_id": "varchar(10)|notnull",
+    "is_default": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "event_id",
+    "locale_id",
+    "is_default",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "event_id>event(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "supported_payment_gateway": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "payment_gateway_id": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "payment_gateway_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "payment_gateway_id>payment_gateway(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "system_config": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "session_timeout_value": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "session_timeout_value",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "tax_category": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "name": "varchar(100)|notnull",
+    "rate_pct": "decimal(5,2)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(200)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "name",
+    "rate_pct",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "teleport_button_position": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "created_at": "datetime2(7)|notnull",
+    "created_by": "nvarchar(256)|null",
+    "modified_at": "datetime2(7)|notnull",
+    "modified_by": "nvarchar(256)|null"
+   },
+   "order": [
+    "id",
+    "created_at",
+    "created_by",
+    "modified_at",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "teleport_table": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "name_key": "uniqueidentifier|null",
+    "is_active": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "status": "varchar(20)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "name_key",
+    "is_active",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time",
+    "status"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "teleport_table_activity_mtx": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "user_id": "uniqueidentifier|notnull",
+    "table_id": "int|notnull",
+    "button_id": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "user_id",
+    "table_id",
+    "button_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "button_id>teleport_table_button(id)",
+    "table_id>teleport_table(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "teleport_table_button": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "teleport_table_id": "int|notnull",
+    "map_spot_id": "int|null",
+    "name_key": "uniqueidentifier|notnull",
+    "is_active": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "status": "varchar(20)|notnull",
+    "position_id": "int|null",
+    "icon_key": "varchar(50)|null"
+   },
+   "order": [
+    "id",
+    "teleport_table_id",
+    "map_spot_id",
+    "name_key",
+    "is_active",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time",
+    "status",
+    "position_id",
+    "icon_key"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "map_spot_id>map_spot(id)",
+    "teleport_table_id>teleport_table(id)"
+   ],
+   "uq": []
+  },
+  "ticket": {
+   "cols": {
+    "id": "int|notnull",
+    "event_id": "int|notnull",
+    "ticket_type_id": "int|notnull",
+    "seat": "varchar(10)|null",
+    "section": "varchar(50)|null",
+    "valid_from": "datetime2(7)|notnull",
+    "valid_to": "datetime2(7)|notnull",
+    "is_transferable": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "thumbnail_media_id": "bigint|null"
+   },
+   "order": [
+    "id",
+    "event_id",
+    "ticket_type_id",
+    "seat",
+    "section",
+    "valid_from",
+    "valid_to",
+    "is_transferable",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "thumbnail_media_id"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "event_id>event(id)",
+    "id>item(id)",
+    "ticket_type_id>ticket_type(id)"
+   ],
+   "uq": []
+  },
+  "ticket_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "tifoxr_3d_ai_class_labels": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "ai_moderated_class_id": "int|notnull",
+    "ai_label": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "ai_moderated_class_id",
+    "ai_label",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "ai_moderated_class_id>tifoxr_3d_moderated_class(id)"
+   ],
+   "uq": []
+  },
+  "tifoxr_3d_moderated_class": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "name": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "name",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "tifoxr_3d_moderation_status": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "status": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "status",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "tifoxr_3d_question_inbox": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "streaming_id": "uniqueidentifier|notnull",
+    "question_id": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "streaming_id",
+    "question_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "question_id>tifoxr_3d_user_question(id)",
+    "streaming_id>tifoxr_3d_stream(id)"
+   ],
+   "uq": []
+  },
+  "tifoxr_3d_stream": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "event_id": "int|notnull",
+    "entity_id": "int|notnull",
+    "streaming_url": "varchar(255)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "event_id",
+    "entity_id",
+    "streaming_url",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "entity_id>entity(id)",
+    "event_id>event(id)"
+   ],
+   "uq": []
+  },
+  "tifoxr_3d_streaming_config": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "streaming_id": "uniqueidentifier|notnull",
+    "max_question_length": "int|notnull",
+    "max_questions_per_user": "smallint|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "streaming_id",
+    "max_question_length",
+    "max_questions_per_user",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "streaming_id>tifoxr_3d_stream(id)"
+   ],
+   "uq": []
+  },
+  "tifoxr_3d_streaming_session_summary_mtx": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "streaming_id": "uniqueidentifier|notnull",
+    "snapshot_time": "datetime2(7)|notnull",
+    "total_viewers": "int|notnull",
+    "average_bitrate": "int|notnull",
+    "average_fps": "decimal(5,2)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "streaming_id",
+    "snapshot_time",
+    "total_viewers",
+    "average_bitrate",
+    "average_fps",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "streaming_id>tifoxr_3d_stream(id)"
+   ],
+   "uq": []
+  },
+  "tifoxr_3d_streaming_status": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "status": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "status",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "tifoxr_3d_streaming_user_entry_log": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "streaming_id": "uniqueidentifier|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "user_session_id": "uniqueidentifier|notnull",
+    "join_time": "datetime2(7)|notnull",
+    "leave_time": "datetime2(7)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "streaming_id",
+    "user_id",
+    "user_session_id",
+    "join_time",
+    "leave_time",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "streaming_id>tifoxr_3d_stream(id)",
+    "user_id>user(id)",
+    "user_session_id>tifoxr_3d_streaming_user_session(id)"
+   ],
+   "uq": []
+  },
+  "tifoxr_3d_streaming_user_mtx": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "user_activity_id": "uniqueidentifier|notnull",
+    "streaming_id": "uniqueidentifier|notnull",
+    "os": "varchar(64)|notnull",
+    "device_type": "varchar(64)|notnull",
+    "avg_bitrate": "int|notnull",
+    "avg_fps": "decimal(5,2)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "user_id",
+    "user_activity_id",
+    "streaming_id",
+    "os",
+    "device_type",
+    "avg_bitrate",
+    "avg_fps",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "streaming_id>tifoxr_3d_stream(id)",
+    "user_activity_id>user_event_activity_mtx(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "tifoxr_3d_streaming_user_session": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "streaming_id": "uniqueidentifier|notnull",
+    "platform_id": "int|notnull",
+    "ip_address": "varchar(45)|null",
+    "oauth_token": "varchar(500)|null",
+    "status_id": "int|notnull",
+    "start_time": "datetime2(7)|notnull",
+    "last_active_time": "datetime2(7)|null",
+    "end_time": "datetime2(7)|null",
+    "expiration_time": "datetime2(7)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "user_id",
+    "streaming_id",
+    "platform_id",
+    "ip_address",
+    "oauth_token",
+    "status_id",
+    "start_time",
+    "last_active_time",
+    "end_time",
+    "expiration_time",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "platform_id>platform_type(id)",
+    "status_id>tifoxr_3d_streaming_status(id)",
+    "streaming_id>tifoxr_3d_stream(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "tifoxr_3d_user_question": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "streaming_id": "uniqueidentifier|notnull",
+    "user_session_id": "uniqueidentifier|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "question_text": "nvarchar(max)|notnull",
+    "locale_id": "varchar(10)|null",
+    "moderation_status_id": "int|notnull",
+    "toxicity_score": "decimal(5,2)|notnull",
+    "moderated_class_id": "int|null",
+    "banned_terms_found": "smallint|null",
+    "request_time": "datetime2(7)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "streaming_id",
+    "user_session_id",
+    "user_id",
+    "question_text",
+    "locale_id",
+    "moderation_status_id",
+    "toxicity_score",
+    "moderated_class_id",
+    "banned_terms_found",
+    "request_time",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "locale_id>i18n_locale(id)",
+    "moderated_class_id>tifoxr_3d_moderated_class(id)",
+    "moderation_status_id>tifoxr_3d_moderation_status(id)",
+    "streaming_id>tifoxr_3d_stream(id)",
+    "user_id>user(id)",
+    "user_session_id>tifoxr_3d_streaming_user_session(id)"
+   ],
+   "uq": []
+  },
+  "transaction_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "trivia_question_game": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "game_id": "int|notnull",
+    "question_key": "char(36)|notnull",
+    "difficulty_id": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "game_id",
+    "question_key",
+    "difficulty_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "difficulty_id>game_difficulty(id)",
+    "game_id>game(id)"
+   ],
+   "uq": []
+  },
+  "trivia_question_option": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "question_id": "int|notnull",
+    "game_option_id": "int|notnull",
+    "sort_order": "smallint|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "question_id",
+    "game_option_id",
+    "sort_order",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "game_option_id>game_option(id)",
+    "question_id>trivia_question_game(id)"
+   ],
+   "uq": []
+  },
+  "user": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "platform_type_id": "int|null",
+    "username": "varchar(64)|notnull",
+    "user_type_id": "int|notnull",
+    "user_age_range_id": "int|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "display_name": "varchar(64)|null",
+    "oid": "varchar(128)|null",
+    "tid": "varchar(128)|null",
+    "avatar_id": "varchar(255)|null",
+    "login_type_id": "int|null",
+    "email": "varchar(256)|null",
+    "cms_oid": "varchar(128)|null",
+    "system_role_id": "int|null",
+    "entity_id": "int|null",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull",
+    "health_and_safety_accepted": "bit|notnull",
+    "health_and_safety_accepted_at": "datetime2(7)|null",
+    "google_sub": "varchar(128)|null"
+   },
+   "order": [
+    "id",
+    "platform_type_id",
+    "username",
+    "user_type_id",
+    "user_age_range_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "display_name",
+    "oid",
+    "tid",
+    "avatar_id",
+    "login_type_id",
+    "email",
+    "cms_oid",
+    "system_role_id",
+    "entity_id",
+    "created_by",
+    "created_time",
+    "health_and_safety_accepted",
+    "health_and_safety_accepted_at",
+    "google_sub"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "entity_id>entity(id)",
+    "login_type_id>login_type(id)",
+    "platform_type_id>platform_type(id)",
+    "system_role_id>role(id)",
+    "user_age_range_id>user_age_range(id)",
+    "user_type_id>user_type(id)"
+   ],
+   "uq": []
+  },
+  "user_age_range": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "min_range": "smallint|notnull",
+    "max_range": "smallint|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "min_range",
+    "max_range",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "user_badge": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "badge_id": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "user_id",
+    "badge_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "badge_id>badge(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "user_booth_activity_mtx": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "booth_id": "int|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "exit_code_id": "int|null",
+    "booth_name_key": "char(36)|notnull",
+    "session_id": "uniqueidentifier|notnull",
+    "entry_datetime": "datetime2(7)|notnull",
+    "session_duration": "int|null",
+    "exit_datetime": "datetime2(7)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "booth_id",
+    "user_id",
+    "exit_code_id",
+    "booth_name_key",
+    "session_id",
+    "entry_datetime",
+    "session_duration",
+    "exit_datetime",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "booth_id>booth(id)",
+    "exit_code_id>user_exit_code(id)",
+    "session_id>user_session_management(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "user_entity_map": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "user_id": "uniqueidentifier|notnull",
+    "entity_id": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull"
+   },
+   "order": [
+    "id",
+    "user_id",
+    "entity_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "created_by",
+    "created_time"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "entity_id>entity(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "user_event_activity_mtx": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "event_id": "int|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "exit_reason_id": "int|null",
+    "join_datetime": "datetime2(7)|notnull",
+    "exit_datetime": "datetime2(7)|null",
+    "duration": "int|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "event_id",
+    "user_id",
+    "exit_reason_id",
+    "join_datetime",
+    "exit_datetime",
+    "duration",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "event_id>event(id)",
+    "exit_reason_id>user_exit_code(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "user_exit_code": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "name": "varchar(50)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "name",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "user_free_trial_grant_item": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "user_id": "varchar(36)|notnull",
+    "item_id": "int|null",
+    "space_id": "int|notnull",
+    "order_id": "uniqueidentifier|notnull",
+    "quantity": "int|notnull",
+    "claimed_at": "datetime2(7)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(200)|notnull",
+    "package_id": "int|null"
+   },
+   "order": [
+    "id",
+    "user_id",
+    "item_id",
+    "space_id",
+    "order_id",
+    "quantity",
+    "claimed_at",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "package_id"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "item_id>item(id)",
+    "order_id>orders(id)",
+    "package_id>package(id)",
+    "space_id>space(id)"
+   ],
+   "uq": []
+  },
+  "user_game_coins": {
+   "cols": {
+    "user_id": "uniqueidentifier|notnull",
+    "coins": "bigint|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "user_id",
+    "coins",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "user_id"
+   ],
+   "fks": [
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "user_game_scoreboard": {
+   "cols": {
+    "user_id": "uniqueidentifier|notnull",
+    "space_id": "int|notnull",
+    "game_id": "int|notnull",
+    "total_score": "bigint|notnull",
+    "games_played": "int|notnull",
+    "last_played_time": "datetime2(7)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "weekly_score": "bigint|notnull",
+    "weekly_games_played": "int|notnull",
+    "week_start_date": "date|null",
+    "monthly_score": "bigint|notnull",
+    "monthly_games_played": "int|notnull",
+    "month_start_date": "date|null"
+   },
+   "order": [
+    "user_id",
+    "space_id",
+    "game_id",
+    "total_score",
+    "games_played",
+    "last_played_time",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "weekly_score",
+    "weekly_games_played",
+    "week_start_date",
+    "monthly_score",
+    "monthly_games_played",
+    "month_start_date"
+   ],
+   "pk": [
+    "user_id",
+    "space_id",
+    "game_id"
+   ],
+   "fks": [
+    "game_id>game(id)",
+    "space_id>space(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "user_game_session": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "user_session_id": "uniqueidentifier|notnull",
+    "game_id": "int|notnull",
+    "score_value": "int|notnull",
+    "coins_earned": "bigint|notnull",
+    "start_time": "datetime2(7)|notnull",
+    "end_time": "datetime2(7)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "user_id",
+    "user_session_id",
+    "game_id",
+    "score_value",
+    "coins_earned",
+    "start_time",
+    "end_time",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "game_id>game(id)",
+    "user_id>user(id)",
+    "user_session_id>user_session_management(id)"
+   ],
+   "uq": []
+  },
+  "user_guess_player_game_clue": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "user_id": "uniqueidentifier|notnull",
+    "clue_id": "int|notnull",
+    "is_unlocked": "bit|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "user_id",
+    "clue_id",
+    "is_unlocked",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "clue_id>guess_player_game_clue(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "user_inventory": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "user_id": "varchar(36)|notnull",
+    "item_id": "int|notnull",
+    "quantity": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(200)|notnull",
+    "item_type_id": "int|notnull"
+   },
+   "order": [
+    "id",
+    "user_id",
+    "item_id",
+    "quantity",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "item_type_id"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "user_match_game_predictions": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "user_id": "uniqueidentifier|notnull",
+    "predict_match_game_id": "int|notnull",
+    "prediction": "tinyint|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "user_id",
+    "predict_match_game_id",
+    "prediction",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "predict_match_game_id>predict_match_game(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "user_payment_method": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "payment_gateway_id": "int|notnull",
+    "payment_method_type_id": "int|null",
+    "gateway_ref": "varchar(64)|null",
+    "metadata": "nvarchar(max)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "user_id",
+    "payment_gateway_id",
+    "payment_method_type_id",
+    "gateway_ref",
+    "metadata",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "payment_gateway_id>payment_gateway(id)",
+    "payment_method_type_id>payment_method_type(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "user_reward": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "user_id": "uniqueidentifier|notnull",
+    "reward_id": "int|notnull",
+    "space_id": "int|notnull",
+    "reward_status_id": "int|notnull",
+    "grant_source": "varchar(50)|null",
+    "source_event_id": "int|null",
+    "idempotency_key": "char(36)|notnull",
+    "claimed_at": "datetime2(7)|notnull",
+    "expired_at": "datetime2(7)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "user_id",
+    "reward_id",
+    "space_id",
+    "reward_status_id",
+    "grant_source",
+    "source_event_id",
+    "idempotency_key",
+    "claimed_at",
+    "expired_at",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "reward_id>reward(id)",
+    "reward_status_id>reward_status(id)",
+    "space_id>space(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "user_session_management": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "geolocation_id": "uniqueidentifier|null",
+    "platform_type_id": "int|null",
+    "space_id": "int|null",
+    "ip_address": "varchar(45)|null",
+    "oauth_token": "varchar(500)|null",
+    "status_id": "int|notnull",
+    "start_time": "datetime2(7)|notnull",
+    "last_active_time": "datetime2(7)|null",
+    "end_time": "datetime2(7)|null",
+    "expiration_time": "datetime2(7)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull",
+    "device_id": "varchar(255)|null",
+    "created_by": "varchar(36)|notnull",
+    "created_time": "datetime2(7)|notnull"
+   },
+   "order": [
+    "id",
+    "user_id",
+    "geolocation_id",
+    "platform_type_id",
+    "space_id",
+    "ip_address",
+    "oauth_token",
+    "status_id",
+    "start_time",
+    "last_active_time",
+    "end_time",
+    "expiration_time",
+    "is_deleted",
+    "modified_time",
+    "modified_by",
+    "device_id",
+    "created_by",
+    "created_time"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "geolocation_id>geolocation(id)",
+    "platform_type_id>platform_type(id)",
+    "space_id>space(id)",
+    "status_id>session_status(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "user_space_activity_mtx": {
+   "cols": {
+    "id": "uniqueidentifier|notnull",
+    "space_id": "int|notnull",
+    "user_id": "uniqueidentifier|notnull",
+    "exit_code": "int|null",
+    "session_id": "uniqueidentifier|notnull",
+    "join_time": "datetime2(7)|notnull",
+    "session_duration": "int|notnull",
+    "left_datetime": "datetime2(7)|null",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "user_id",
+    "exit_code",
+    "session_id",
+    "join_time",
+    "session_duration",
+    "left_datetime",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "exit_code>user_exit_code(id)",
+    "session_id>user_session_management(id)",
+    "space_id>space(id)",
+    "user_id>user(id)"
+   ],
+   "uq": []
+  },
+  "user_type": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "type": "varchar(64)|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "type",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [],
+   "uq": []
+  },
+  "workflow": {
+   "cols": {
+    "id": "int|notnull|identity",
+    "space_id": "int|notnull",
+    "name": "varchar(50)|notnull",
+    "state_type_id": "int|notnull",
+    "is_deleted": "bit|notnull",
+    "modified_time": "datetime2(7)|notnull",
+    "modified_by": "varchar(36)|notnull"
+   },
+   "order": [
+    "id",
+    "space_id",
+    "name",
+    "state_type_id",
+    "is_deleted",
+    "modified_time",
+    "modified_by"
+   ],
+   "pk": [
+    "id"
+   ],
+   "fks": [
+    "space_id>space(id)",
+    "state_type_id>state_type(id)"
+   ],
+   "uq": []
+  }
+ },
+ "procs": {
+  "sp_ActiveAds_GetByDate": "b964050821a1",
+  "sp_ActiveAds_GetScheduleForDate": "9d94e99d3cb1",
+  "sp_ActivityLog_GetBySpace": "17d5a965c2ab",
+  "sp_ActivityLog_GetEntityName": "d1ad5536791b",
+  "sp_ActivityLog_Insert": "9407eaf85935",
+  "sp_Ad_Create": "4a2cebae4a48",
+  "sp_Ad_Delete": "e71d0329b53e",
+  "sp_Ad_GetByCampaign": "075ee5dcaf1f",
+  "sp_Ad_GetByCampaign_Unity": "c87009537e0f",
+  "sp_Ad_GetById": "998289d1eba4",
+  "sp_Ad_GetById_Unity": "7b29b5f4b5e9",
+  "sp_Ad_PruneUnairedDates": "09ac1e9a8849",
+  "sp_Ad_Update": "0c8e4c4f474b",
+  "sp_Ad3dModel_Create": "9bbef36442b0",
+  "sp_Ad3dModel_Delete": "962006800183",
+  "sp_Ad3dModel_GetAll": "87191a12ae6d",
+  "sp_Ad3dModel_GetById": "4acc759c6389",
+  "sp_Ad3dModel_Update": "83e5ab659019",
+  "sp_AdPlacement_Create": "0de7171118f5",
+  "sp_AdPlacement_Delete": "ac56612d3316",
+  "sp_AdPlacement_GetAvailability": "3c5cbf7c16db",
+  "sp_AdPlacement_GetAvailabilityPerDay": "82065d5a4514",
+  "sp_AdPlacement_GetById": "478ec83a9336",
+  "sp_AdPlacement_GetBySpace": "d9e47c8e8d57",
+  "sp_AdPlacement_GetOccupied": "9d51b8eaed13",
+  "sp_AdPlacement_Update": "d064a2a871ca",
+  "sp_AdPortal_Apply": "3b94d88311ab",
+  "sp_AdPortal_Remove": "5216f766d95e",
+  "sp_AdPortal_RemoveForAds": "fea9caca682d",
+  "sp_AdPortal_SetI18n": "8d10e02ffe9f",
+  "sp_AdPortal_SetMediaLinks": "2e8f805a3f7b",
+  "sp_AdPortal_SoftDeleteMedia": "fc09a9b0829e",
+  "sp_Advertiser_Create": "1a12cdba0ff0",
+  "sp_Advertiser_Delete": "e27001ee3d41",
+  "sp_Advertiser_GetById": "507f7b195253",
+  "sp_Advertiser_GetById_Unity": "61f6d3fed848",
+  "sp_Advertiser_GetBySpace": "eec988f64ae8",
+  "sp_Advertiser_GetBySpace_Unity": "bd21279493f4",
+  "sp_Advertiser_Update": "dc3f2269ae47",
+  "sp_Auth_CreateGoogleUserWithSession": "e698416d985b",
+  "sp_Auth_GetGoogleUserBySub": "c48760ef89cd",
+  "sp_Auth_LinkGoogleIdentity": "d44d4e605559",
+  "sp_Booth_Create": "f285f8838d15",
+  "sp_Booth_DeleteCascade": "20eb20b70f87",
+  "sp_Booth_DeleteMediaById": "73868ea560e8",
+  "sp_Booth_GetById": "9ed230ae21fe",
+  "sp_Booth_GetById_Unity": "40d408afd5ad",
+  "sp_Booth_GetBySpace": "e83ee06af60c",
+  "sp_Booth_GetBySpace_Unity": "56304802376b",
+  "sp_Booth_GetMedia": "67cfdd6d62c3",
+  "sp_Booth_GetMediaById": "6045dbc5283f",
+  "sp_Booth_InsertMedia": "d466330ec793",
+  "sp_Booth_Update": "efdf5081412d",
+  "sp_Booth_UpdateMediaSingle": "dabde4baf175",
+  "sp_BumpContentVersion": "b2736d04299d",
+  "sp_Campaign_Create": "da7177903c43",
+  "sp_Campaign_Delete": "6c25d4107e52",
+  "sp_Campaign_GetByAdvertiser": "971d11630dd9",
+  "sp_Campaign_GetByAdvertiser_Unity": "9a3e0d1a7fab",
+  "sp_Campaign_GetById": "9c42ee8afb56",
+  "sp_Campaign_GetById_Unity": "8000a06786ef",
+  "sp_Campaign_GetDateChangeImpact": "fd950947a7a5",
+  "sp_Campaign_Update": "113e58a1b7a8",
+  "sp_Charity_Create": "57952a40eeb1",
+  "sp_Charity_Delete": "30f4de3a22cc",
+  "sp_Charity_GetById": "8a93efa871cc",
+  "sp_Charity_GetById_Unity": "d496f723f21a",
+  "sp_Charity_GetBySpace": "21707f8f979d",
+  "sp_Charity_GetBySpace_Unity": "1d947cd18150",
+  "sp_Charity_Update": "dd8a955fa6e5",
+  "sp_CustomBoothItem_Create": "73feb7ca6614",
+  "sp_CustomBoothItem_Delete": "39808f6d3a96",
+  "sp_CustomBoothItem_GetByBoothIds": "503d124b157b",
+  "sp_CustomBoothItem_GetByBoothIds_Unity": "4bf353632648",
+  "sp_CustomBoothItem_GetById": "fc3129325294",
+  "sp_CustomBoothItem_GetTypes": "13e0f1d41526",
+  "sp_CustomBoothItem_Update": "91b8539f9d31",
+  "sp_CustomBoothItemLinks_Get": "872a02883c6e",
+  "sp_CustomBoothItemLinks_GetApproved_Unity": "e0434a54b9e4",
+  "sp_Entity_GetCurrencyIdBySpace": "a2a6c142bdb0",
+  "sp_Event_Create": "abf5123c02c8",
+  "sp_Event_Delete": "1c39e32eca2c",
+  "sp_Event_GetById": "be9eae9c9014",
+  "sp_Event_GetById_Unity": "ee114efbd2f7",
+  "sp_Event_GetBySpace": "134ab707bdf2",
+  "sp_Event_GetBySpace_Unity": "ae4a819f50a0",
+  "sp_Event_Update": "367fc73b2a4f",
+  "sp_FreeTrialClaims_SelectBySpace": "0e2cceecd989",
+  "sp_FreeTrialItem_Delete": "d428beb4b8c1",
+  "sp_FreeTrialItem_DeleteById": "569515138220",
+  "sp_FreeTrialItem_DeleteForPackage": "c02ca75ce68b",
+  "sp_FreeTrialItem_ExistsForItem": "c2220eb22319",
+  "sp_FreeTrialItem_ExistsForPackage": "436df5dab198",
+  "sp_FreeTrialItem_GetForUpdate": "266d3d819ddc",
+  "sp_FreeTrialItem_GetPackageIdById": "500f7871533f",
+  "sp_FreeTrialItem_Insert": "f2b837fc621b",
+  "sp_FreeTrialItem_SelectBySpace": "ebefa6d33c0d",
+  "sp_FreeTrialItem_SelectBySpace_Unity": "b8a7011107ca",
+  "sp_FreeTrialSetting_ExistsForSpace": "8e9857f457de",
+  "sp_FreeTrialSetting_GetForUpdate": "185805fc0078",
+  "sp_FreeTrialSetting_Insert": "26f55497b123",
+  "sp_FreeTrialSetting_SelectBySpace": "d451ab0d9f85",
+  "sp_FreeTrialSetting_SelectBySpace_Unity": "0e34bdc4169a",
+  "sp_FreeTrialSetting_Update": "dbdd7e13ec85",
+  "sp_Game_Create": "f237f1dc5295",
+  "sp_Game_GetById": "b3a70c787e79",
+  "sp_Game_List": "18464c530b84",
+  "sp_Game_Update": "2da39d791dda",
+  "sp_GameAnnouncement_Create": "9bbb51235d49",
+  "sp_GameAnnouncement_Delete": "54a461c9dc4f",
+  "sp_GameAnnouncement_GetById": "f6262de69da7",
+  "sp_GameAnnouncement_ListActiveForPublish": "037f52ee9f0a",
+  "sp_GameAnnouncement_ListBySpaceGame": "0aceda0a661c",
+  "sp_GameAnnouncement_Update": "a3de4a123074",
+  "sp_GameAnnouncementPrizePack_Add": "9c30106eef8d",
+  "sp_GameAnnouncementPrizePack_ListByAnnouncement": "d2b8dd74f0cf",
+  "sp_GameAnnouncementPrizePack_Remove": "ac9535593904",
+  "sp_GameAnnouncementUserPrize_Add": "698b3a8c9683",
+  "sp_GameAnnouncementWinner_Grant": "d161a893a64e",
+  "sp_GameAnnouncementWinner_ListByAnnouncement": "a244935ee9f8",
+  "sp_GameSession_InsertAndUpdateLeaderboardBatch": "57e2f2ff78b5",
+  "sp_GetSpacesWithAdPlacements": "c70b6d041018",
+  "sp_GetSpacesWithGameAnnouncements": "f8c8d863f71c",
+  "sp_Hosting_Create": "829e1ce9ec63",
+  "sp_Hosting_Delete": "5bc0a1275147",
+  "sp_Hosting_GetById": "32ede8578512",
+  "sp_Hosting_GetById_Unity": "aeb52ce4d9eb",
+  "sp_Hosting_GetBySpace": "465bfbdf1591",
+  "sp_Hosting_GetBySpace_Unity": "2449e2174f02",
+  "sp_Hosting_Update": "a6576f290eb9",
+  "sp_Item_GetTypeId": "348459a78843",
+  "sp_Item_SelectPickerBySpace": "f30153ee4b10",
+  "sp_Item_SelectPrizeOnlyBySpace": "2a3578d8ceb3",
+  "sp_Item_SetPriceOnly": "9c0f625140fc",
+  "sp_ItemCatalog_TrialEligibility_SelectBySpace": "537887a7ac69",
+  "sp_Leaderboard_GetTopAndCurrentUser": "9f39d708caa9",
+  "sp_Leaderboard_GetUserGameStats": "699fec171395",
+  "sp_MapSpot_Create": "e6fb332b2d64",
+  "sp_MapSpot_GetAll": "be94319d8bd4",
+  "sp_Media_Create": "d27517d97761",
+  "sp_PackageCatalog_TrialEligibility_Get": "facc6abc0b47",
+  "sp_PackageCatalog_TrialEligibility_SelectBySpace": "9e647d5f42dd",
+  "sp_Portal_Create": "ceded0572aa1",
+  "sp_Portal_GetByBooth": "7d8ea14f84f6",
+  "sp_Portal_GetByBooth_Unity": "03b55b7cda8a",
+  "sp_Portal_GetByBoothIds": "9fd3cc73cf20",
+  "sp_Portal_GetByBoothIds_Unity": "17c3c1d82779",
+  "sp_Portal_GetById": "6ea7d7d4047e",
+  "sp_Portal_GetById_Unity": "7aa9a87f86ff",
+  "sp_Portal_GetBySpace": "bd024551a056",
+  "sp_Portal_GetBySpace_Unity": "a12dbb457244",
+  "sp_Portal_Update": "37c05b22add7",
+  "sp_PortalLinks_Get": "4fc79508438a",
+  "sp_PortalLinks_GetApproved_Unity": "dfb09f3ee2d0",
+  "sp_PredefinedComment_GetByKey": "fc517d5e74c6",
+  "sp_PredefinedComment_GetBySpace": "d11b8e375f82",
+  "sp_PredefinedComment_GetBySpace_Unity": "fc4e8f687850",
+  "sp_ProcessMetricEventBatch": "667a5017c02a",
+  "sp_Scoreboard_GetByDateRange": "7eff82a9eb7c",
+  "sp_Scoreboard_GetPlayerHistory": "73566f18311a",
+  "sp_Space_GetCurrencyId": "ff7e4b9611bb",
+  "sp_Space_GetGoogleClientId": "9e871f739929",
+  "sp_Space_SetGoogleClientId": "f8b348a7ce29",
+  "sp_SupportedLanguages_Get": "4520f5b0ea15",
+  "sp_TeleportButton_GetById": "3d48ec4bfb47",
+  "sp_TeleportButton_UpdateMapSpot": "7b156ff40d31",
+  "sp_TeleportButton_UpdatePosition": "4cb0c657cb2a",
+  "sp_TeleportButtonPosition_GetAll": "1247a9f45270",
+  "sp_TeleportTable_AutoCreate": "fa1cb116a6c9",
+  "sp_TeleportTable_ButtonDuplicateCheck": "f9de404431bb",
+  "sp_TeleportTable_GetById": "17fb918a54a3",
+  "sp_TeleportTable_GetBySpace": "175b0c22bf88",
+  "sp_TeleportTable_GetBySpace_Unity": "7ba78c3960fa",
+  "sp_TransactionType_GetIdByCode": "1aa98445df81",
+  "sp_UpsertContentVersion": "bb8f654b9509",
+  "sp_UserFreeTrialGrantItem_ExistsForUserItem": "2e3d36f40b60",
+  "sp_UserFreeTrialGrantItem_ExistsForUserPackage": "3b8b48985638",
+  "sp_UserFreeTrialGrantItem_Insert": "b383b28ca016",
+  "sp_UserFreeTrialGrantItem_IsLiveForUser": "8a7797d9865e",
+  "sp_UserFreeTrialGrantItem_IsLiveForUserPackage": "60e37304fd44",
+  "sp_UserInventory_ExistsForUserItem": "c4d8431b8e7d",
+  "sp_UserInventory_ExistsForUserPackage": "bec00b75b69c",
+  "usp_admin_add_member_to_space": "0b1c21156741",
+  "usp_admin_add_role_to_member": "6138e9631683",
+  "usp_admin_apply_pending_invitation": "c6a00547185d",
+  "usp_admin_create_cms_user_from_invitation": "fa86e7c3f5d7",
+  "usp_admin_create_entity": "1ecbf32226d9",
+  "usp_admin_create_pending_invitation": "20a69ba06654",
+  "usp_admin_create_space": "fe00d105fc03",
+  "usp_admin_delete_user_account": "69852083ba00",
+  "usp_admin_get_all_entities": "91a6420899f4",
+  "usp_admin_get_cms_user_by_cms_oid": "e270ddbd6f84",
+  "usp_admin_get_cms_user_by_email": "64bad282a1d6",
+  "usp_admin_get_entity_admins": "bb383e38d6cd",
+  "usp_admin_get_entity_config": "15adff2f9242",
+  "usp_admin_get_global_admins": "8546a2a4611f",
+  "usp_admin_get_gms_accountants": "47a687a70f70",
+  "usp_admin_get_gms_spaces": "ef9894e1f5fa",
+  "usp_admin_get_members_by_space": "49c172eaf0a8",
+  "usp_admin_get_open_invitation_by_email_and_space": "cac6c74292fe",
+  "usp_admin_get_pending_entity_admin_invitations": "5d5277a8d844",
+  "usp_admin_get_pending_global_admin_invitations": "552dc4b7db25",
+  "usp_admin_get_pending_gms_accountant_invitations": "2fa6f32b166a",
+  "usp_admin_get_pending_invitation_by_email": "350658e243e1",
+  "usp_admin_get_pending_invitations_by_space": "0694dd6d2c49",
+  "usp_admin_get_roles_by_scope": "fd19f0857c70",
+  "usp_admin_get_space_config": "33dd45b3ebad",
+  "usp_admin_get_space_supported_languages": "0d01934f5fef",
+  "usp_admin_get_spaces_by_entity": "058ab94000d6",
+  "usp_admin_get_user_analytics": "fe506ed2e058",
+  "usp_admin_get_user_analytics_cms": "2146ef00d2cd",
+  "usp_admin_get_user_analytics_drilldown": "51028a6ba516",
+  "usp_admin_get_user_analytics_immersive": "6ef4ff1b73f1",
+  "usp_admin_get_user_analytics_overview": "6986b62623d0",
+  "usp_admin_get_user_analytics_retention": "7aa4714422ba",
+  "usp_admin_get_user_by_email": "6ef53bc41d3b",
+  "usp_admin_get_user_dau_mau": "ec4f43a2f6e0",
+  "usp_admin_get_user_spaces": "72c47b36bf92",
+  "usp_admin_get_user_spaces_for_delete": "7eb6fab693ee",
+  "usp_admin_has_any_space_membership_or_pending": "caf05699da61",
+  "usp_admin_has_space_membership_outside_entity": "fcecffe400fc",
+  "usp_admin_invite_entity_admin": "4de19fb2cd07",
+  "usp_admin_invite_global_admin": "083b15aab82b",
+  "usp_admin_invite_gms_accountant": "d90b23f0abb8",
+  "usp_admin_is_conflicting_entity_admin_for_space": "332172c75fcd",
+  "usp_admin_is_entity_admin_elsewhere": "3a5fa313576b",
+  "usp_admin_is_gms_accountant_or_pending": "796cd34aee51",
+  "usp_admin_remove_entity_admin": "ceecfc838235",
+  "usp_admin_remove_global_admin": "acf7ea7fbe80",
+  "usp_admin_remove_gms_accountant": "4818a864f4a1",
+  "usp_admin_remove_member_from_space": "ad71e17afda3",
+  "usp_admin_remove_role_from_member": "4ae5f0f51e7d",
+  "usp_admin_revoke_entity_admin_invitation": "facfaef5f0c8",
+  "usp_admin_revoke_global_admin_invitation": "3f6bffb3aee8",
+  "usp_admin_revoke_gms_accountant_invitation": "fce292abc708",
+  "usp_admin_revoke_pending_invitation": "1bb6bfbd5ad0",
+  "usp_admin_role_exists_with_scope": "8ecb768c24a0",
+  "usp_admin_seed_space_config": "9b516cc8480d",
+  "usp_admin_set_space_currency": "4f99e8284da0",
+  "usp_admin_space_exists_in_entity": "7b4b108c1549",
+  "usp_admin_sync_member_roles": "9037938712cc",
+  "usp_admin_update_member_role": "3dcd7bf3d045",
+  "usp_admin_update_user_cms_oid": "a0b1416f0c76",
+  "usp_admin_upsert_entity_config": "905ffaa1f6c4",
+  "usp_admin_upsert_space_config": "8b7a0f08e218",
+  "usp_admin_upsert_space_supported_languages": "26369ce2328b",
+  "usp_auth_backfill_user_email": "8a48c9468c42",
+  "usp_auth_create_guest_user_with_session": "69b12faecb60",
+  "usp_auth_create_microsoft_user_with_session": "93254a44b2b6",
+  "usp_auth_create_session": "e8dab2cfd0b8",
+  "usp_auth_end_session": "9c84ac4396c0",
+  "usp_auth_get_guest_by_device_id": "9a609f9948c9",
+  "usp_auth_get_login_type_id_by_type": "9097ea053ebf",
+  "usp_auth_get_microsoft_user_by_oid_tid": "cef2f21d6206",
+  "usp_auth_get_session_status_id_by_status": "840fee165caa",
+  "usp_auth_get_user_by_email": "95149a168819",
+  "usp_auth_get_user_spaces_by_user_id": "ee8dd361ee9c",
+  "usp_auth_get_user_type_id_by_type": "110a41ccd839",
+  "usp_auth_link_microsoft_identity": "52703572e782",
+  "usp_auth_mark_session_active": "74a2497d5afe",
+  "usp_auth_mark_session_inactive": "9ec0f5bbf33d",
+  "usp_auth_username_exists": "58bccf2f7bb0",
+  "usp_Avatar_GetCurrent": "605ff4d65b1b",
+  "usp_Avatar_Insert": "e2659dd6b72a",
+  "usp_Avatar_Update": "390eca5e647c",
+  "usp_Badge_GetCurrent": "19d148593654",
+  "usp_Badge_Insert": "e8e572f6bdc8",
+  "usp_Badge_Update": "2adc84a15448",
+  "usp_BlobUpload_GetStatus": "91e3412ed0bd",
+  "usp_BlobUpload_Insert": "cb446204a357",
+  "usp_BlobUpload_ListAll": "bf13701ecef1",
+  "usp_BlobUpload_SoftDelete": "24a2b930d268",
+  "usp_Campaign_BulkUpdateCurrencyBySpace": "ac5656e3207a",
+  "usp_Campaign_GetCurrencyImpact": "9c45f0da0685",
+  "usp_Charge_AssignDepositId": "6146c9ed3eb5",
+  "usp_Charge_GetContext": "e7aba823588a",
+  "usp_Charge_Insert": "073b8b8b94cb",
+  "usp_Charge_SelectByOrder": "2415c0270fd1",
+  "usp_Charge_SelectUnassigned": "6c947815efc9",
+  "usp_Charge_Snapshot": "003bf7a0cfca",
+  "usp_ContentApproval_Decide": "03544e4ebaf2",
+  "usp_ContentApproval_GetByContent": "7fadf13f16fc",
+  "usp_ContentApproval_GetById": "3c6039722a1d",
+  "usp_ContentApproval_GetInbox": "2be1c5749fc1",
+  "usp_ContentApproval_GetMySubmissions": "00edd6988ce7",
+  "usp_ContentApproval_GetSpaceMembersWithRoles": "c9f70c9565ff",
+  "usp_ContentApproval_GetUserDisplayName": "564d0d296bbc",
+  "usp_ContentApproval_IsTeleportSpotLocked": "583f62dc329c",
+  "usp_ContentApproval_ResetToPending": "f8cb2a261b2a",
+  "usp_ContentApproval_Submit": "bc46b5079571",
+  "usp_ContentApproval_Withdraw": "ec1cbff6821b",
+  "usp_Currency_Exists": "3c9759a80f51",
+  "usp_Currency_Insert": "cccaf81b73e6",
+  "usp_Currency_SelectIsoById": "e88305c37eb3",
+  "usp_Currency_Update": "5e7bb566701b",
+  "usp_Deposit_GetDetail": "6a502a4cf89d",
+  "usp_Deposit_Select": "230162a48ed4",
+  "usp_DepositWireTransferDocument_GetByDepositId": "1b6776c36c25",
+  "usp_DepositWireTransferDocument_Upsert": "baed82caeb99",
+  "usp_Discount_Delete": "82885968ef02",
+  "usp_Discount_ExistsInSpace": "d3aad64038de",
+  "usp_Discount_ExistsNameKey": "23d279c3cf88",
+  "usp_Discount_GetForUpdate": "c2f784bdf88a",
+  "usp_Discount_Insert": "255cdc56113d",
+  "usp_Discount_SelectActiveForItem": "8d829d0ff58b",
+  "usp_Discount_SelectById": "2734fc5235f4",
+  "usp_Discount_SelectBySpace": "d3e48941696f",
+  "usp_Discount_SelectBySpace_Unity": "aa9bf8680edc",
+  "usp_Discount_SoftExpire": "b0d0a67c2bfc",
+  "usp_Discount_Update": "c25526bddb22",
+  "usp_DiscountType_Exists": "448c045668d8",
+  "usp_Entitlement_Insert": "9ab6dbfacf4e",
+  "usp_Entitlement_RevokeByOrder": "71a9482a7a4f",
+  "usp_Entity_ExistsInSpace": "2cba9031f564",
+  "usp_Event_ExistsInSpace": "5e499f4be2b0",
+  "usp_friend_get_list": "8096ab81d6ed",
+  "usp_friend_notification_get": "b268884cf30f",
+  "usp_friend_notification_mark_all_read": "ee8172a8cff1",
+  "usp_friend_notification_mark_read": "535a52493eef",
+  "usp_friend_remove": "b45e58882605",
+  "usp_friend_request_accept": "edc4107b28a0",
+  "usp_friend_request_cancel": "f481d346fa09",
+  "usp_friend_request_decline": "2c774521832b",
+  "usp_friend_request_get_by_id": "b50664f1f221",
+  "usp_friend_request_get_incoming": "f051a0989ac7",
+  "usp_friend_request_get_outgoing": "5e5bccff6561",
+  "usp_friend_request_send": "22c08998a958",
+  "usp_friend_user_search": "68a56767613d",
+  "usp_get_global_languages": "3b6f2349f66f",
+  "usp_GetSpacesWithEvents": "34286fc589d3",
+  "usp_GetUserInventory": "794151d12960",
+  "usp_GlobalCcuSettings_Select": "152dce333175",
+  "usp_GlobalCcuSettings_Upsert": "bad31e442aa6",
+  "usp_health_and_safety_accept": "9c359a62aafb",
+  "usp_health_and_safety_get_by_user_id": "cf2b2e397180",
+  "usp_I18n_SoftDeleteByKey": "4a30cc99b37a",
+  "usp_I18n_Upsert": "00233a259d60",
+  "usp_Intent_Context": "fe7c0fb0c059",
+  "usp_Intent_FindByIdem": "0b7d15fe06e5",
+  "usp_Intent_FindLatestOrderWithPending": "7efe47414052",
+  "usp_Intent_FindPendingForOrder": "11d6056451db",
+  "usp_Intent_Insert": "ada7910b396d",
+  "usp_Intent_SelectByOrder": "df60b3d1d853",
+  "usp_Intent_TryClaimForCapture": "c633d09dfd04",
+  "usp_Intent_UpdateProvideId": "b820f3887766",
+  "usp_Intent_UpdateStatus": "3c28cb21e913",
+  "usp_Inventory_HasValidEventTicket": "bfb3989c757d",
+  "usp_Invoice_Insert": "56150a002304",
+  "usp_InvoiceLineItem_Insert": "11630633bd32",
+  "usp_Item_ExistsInSpace": "0bbc623e1080",
+  "usp_Item_GetDeleteInfo": "f84f30cd7276",
+  "usp_Item_GetSnapshot": "2fd1c4edfcb2",
+  "usp_Item_Insert": "09a392c92d54",
+  "usp_Item_SelectById": "c76058d756ba",
+  "usp_Item_SelectById_Unity": "45eb5555bbc5",
+  "usp_Item_SelectBySpace": "05a613871fb5",
+  "usp_Item_SelectBySpace_Unity": "36d2c868689a",
+  "usp_Item_SelectCreatedEnvelope": "e3dd80769d8d",
+  "usp_Item_SoftDelete": "c0a98e71a9ee",
+  "usp_Item_UpdateBasics": "a39e32302814",
+  "usp_Item_UpdateDescKey": "7b8de603abd6",
+  "usp_ItemDiscount_DeleteByItem": "69de6f838ead",
+  "usp_ItemDiscount_Exists": "e0b2c2d13182",
+  "usp_ItemDiscount_Insert": "8f4b32cc3b02",
+  "usp_ItemDiscount_Upsert": "e219a0ea22df",
+  "usp_ItemPrice_BulkUpdateCurrencyBySpace": "915948231511",
+  "usp_ItemPrice_ExistsForCurrency": "a306923de4a0",
+  "usp_ItemPrice_GetCurrencyImpact": "f4a45189e43b",
+  "usp_ItemPrice_Insert": "4076c359bd55",
+  "usp_ItemPrice_Select": "4d9f9524a4b4",
+  "usp_ItemPrice_Upsert": "c45df77fc6c8",
+  "usp_Lookup_Currencies": "11db261341ce",
+  "usp_Lookup_ItemTypes": "b12b3be0c2a8",
+  "usp_Lookup_MerchandiseCategories": "5247fcc149ac",
+  "usp_Lookup_MerchandiseTypes": "8f9b11a696a4",
+  "usp_Lookup_RegionalCurrencies": "2e5ce477370e",
+  "usp_Lookup_TicketTypes": "d69840a2a69b",
+  "usp_Merchandise_GetThumb": "2fe195ba0283",
+  "usp_Merchandise_Insert": "db424009a4f7",
+  "usp_Merchandise_Update": "b84044766026",
+  "usp_MerchandiseCategory_Insert": "4aecd5cabee4",
+  "usp_MerchandiseCategory_SoftDelete": "4d74e91a18d0",
+  "usp_MerchandiseCategory_Update": "6a04ce3e288a",
+  "usp_MerchandiseType_Insert": "b58a5da79a0a",
+  "usp_MerchandiseType_SoftDelete": "441de158c6f4",
+  "usp_MerchandiseType_Update": "ddd2e3c71ee7",
+  "usp_Order_ExistsInSpace": "a870e6404139",
+  "usp_Order_FindExisting": "3807f9019543",
+  "usp_Order_GetHeader": "05f43a592c46",
+  "usp_Order_GetTotalNet": "44ca3a107207",
+  "usp_Order_Insert": "6f5397de6fa1",
+  "usp_Order_InsertAdjustment": "2ca738652a70",
+  "usp_Order_InsertLine": "d4558f648440",
+  "usp_Order_SelectAdjustments": "2ba711fdae8a",
+  "usp_Order_SelectEntitlements": "3947514d5d12",
+  "usp_Order_SelectHeader": "881e2e5d799b",
+  "usp_Order_SelectInvoices": "c619792a9715",
+  "usp_Order_SelectLines": "1a41a62657cb",
+  "usp_Order_Snapshot": "345f2d5bd90e",
+  "usp_Order_SumCaptured": "a36ff4f6dd46",
+  "usp_Order_UpdatePaidStatus": "df8e913baf25",
+  "usp_Order_UpdateStatus": "ecf3b1cf1c43",
+  "usp_Package_GetById": "9eaaa01ec33b",
+  "usp_Package_GetForPurchase": "c824076f4f76",
+  "usp_Package_Insert": "1055a329e0aa",
+  "usp_Package_SelectBySpace": "026d18c3eafc",
+  "usp_Package_SelectBySpace_Unity": "c7af00017a78",
+  "usp_Package_SoftDelete": "f3877438600a",
+  "usp_Package_Update": "e65583580e2a",
+  "usp_PackageItem_Delete": "742690150194",
+  "usp_PackageItem_DeleteById": "7d1d6683b5e0",
+  "usp_PackageItem_Insert": "10e894da3e1f",
+  "usp_PackageItem_SelectByPackage": "ec08ab194092",
+  "usp_PaymentAuditLog_Insert": "19ad774990d9",
+  "usp_PaymentDeposit_Exists": "f7c5e16551d5",
+  "usp_PaymentGatewayConfig_GetByCharity": "849b8d0c2705",
+  "usp_PaymentGatewayConfig_GetBySpace": "5c2dcd590e28",
+  "usp_PaymentGatewayConfig_GetOne": "778b53076941",
+  "usp_PaymentGatewayConfig_Toggle": "6e49fd295c07",
+  "usp_PaymentGatewayConfig_Upsert": "4f94d0822ff7",
+  "usp_Personality_ExistsInSpace": "3b508ff48585",
+  "usp_Personality_GetActiveEvents": "74e278e15cfb",
+  "usp_Personality_GetByEntity": "28164378d532",
+  "usp_Reconcile_FindCandidates": "d14b97406f81",
+  "usp_Refund_Insert": "7679f5b5c5c5",
+  "usp_Refund_SelectByOrder": "0d2c3172c8e2",
+  "usp_Shop_ExistsInSpace": "da5b2e1c433c",
+  "usp_Shop_GetSpaceInfo": "7836ea402092",
+  "usp_Shop_InsertDefault": "eaa6cb1c2871",
+  "usp_Shop_SelectDefaultBySpace": "341b77cb3fd7",
+  "usp_ShopItem_Add": "2dd96848b23c",
+  "usp_ShopItem_CountBySpace": "8eff5072907d",
+  "usp_ShopItem_Delete": "e768752440e9",
+  "usp_ShopItem_DeleteByItem": "599497dc33eb",
+  "usp_ShopItem_ExistsMapping": "4309fabc1d45",
+  "usp_ShopItem_GetItemKeys": "6d46a7d8fee8",
+  "usp_ShopItem_InsertFromItem": "50d37c19463e",
+  "usp_ShopItem_SelectByShop": "b9c741259a45",
+  "usp_ShopItem_SelectEnvelope": "731598f3fb0a",
+  "usp_ShopItem_SelectOne": "64a30d32bb57",
+  "usp_ShopItem_Update": "aef4fbc1f415",
+  "usp_ShopItem_UpdateStock": "340bb8700597",
+  "usp_Space_GetActiveCcu": "28b55c6581e9",
+  "usp_Space_Insert": "0fb69e3f9cd7",
+  "usp_Space_JoinMultiplayer": "80f088d1cff8",
+  "usp_Space_LeaveMultiplayer": "6a51da613b49",
+  "usp_Space_SelectById": "82bff5a118d4",
+  "usp_Space_SelectForCcu": "cd3f81650044",
+  "usp_Space_SelectInheritingByEntity": "8158e7fff130",
+  "usp_Space_SetExtraCcuEnabled": "d454280df984",
+  "usp_Space_Update": "67480d684e71",
+  "usp_SpaceMember_SetApprovalExclusion": "ddc0cd880554",
+  "usp_TaxCategory_ExistsInSpace": "88b1dd6a76f7",
+  "usp_TaxCategory_GetById": "e475b41edaf5",
+  "usp_TaxCategory_Insert": "99c002d1a30d",
+  "usp_TaxCategory_SelectById": "f94e0c4b03b2",
+  "usp_TaxCategory_SelectByItem": "d0971dd0f772",
+  "usp_TaxCategory_SelectBySpace": "47906bb1789f",
+  "usp_TaxCategory_SoftDelete": "0bc05d0e4c92",
+  "usp_TaxCategory_Update": "8eafca08b4fd",
+  "usp_Ticket_GetCurrentThumb": "5e4c93bb61c5",
+  "usp_Ticket_Insert": "4fb72bfe1bb8",
+  "usp_Ticket_Update": "4dda2cae63c4",
+  "usp_TicketType_Exists": "e062ecc9615a",
+  "usp_Transaction_Select": "8d3a533886ba",
+  "usp_Transaction_SelectBySpace": "fc71fcdd6252",
+  "usp_user_get_by_user_id": "87dc523f45c4",
+  "usp_User_GetDisplayName": "302efbdf40f7",
+  "usp_user_update_profile": "a7c4e138a2fd",
+  "usp_user_username_exists_excluding_user": "2b64c01ca0dd",
+  "usp_UserInventory_Upsert": "4821e6ae29b7"
+ },
+ "modules": {}
+}

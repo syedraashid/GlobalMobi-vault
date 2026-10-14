@@ -1,0 +1,4 @@
+#!/bin/sh
+# Runs the vault checks before every commit. Enabled by tools/setup.js (git config core.hooksPath .githooks).
+node tools/build-index.js --check || exit 1
+node tools/check-vault.js || exit 1

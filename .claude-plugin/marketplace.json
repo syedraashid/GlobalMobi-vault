@@ -1,0 +1,17 @@
+{
+  "name": "tifoxr-plugins",
+  "metadata": {
+    "description": "Claude Code plugins for the TifoXR project"
+  },
+  "owner": {
+    "name": "TifoXR Engineering"
+  },
+  "plugins": [
+    {
+      "name": "tifoxr",
+      "version": "1.0.0",
+      "source": "./",
+      "description": "TifoXR knowledge vault: session index, on-demand database context, SQL migration skill, guard hooks"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "_comment": "Put this in .claude/settings.json of the backend and CMS repos (by pull request) so teammates are prompted to install the TifoXR plugin. Replace the url with the real git URL of the vault repo.",
+  "extraKnownMarketplaces": {
+    "tifoxr-plugins": {
+      "source": { "source": "git", "url": "REPLACE-WITH-VAULT-GIT-URL" }
+    }
+  },
+  "enabledPlugins": {
+    "tifoxr@tifoxr-plugins": true
+  }
+}

@@ -1,0 +1,395 @@
+{
+ "_comment": "Maps tables to vault domain notes. New tables are matched by prefixRules (first match wins); otherwise they are listed as Unassigned. Edit here to assign.",
+ "domains": [
+  {
+   "title": "Spaces and Access",
+   "description": "Spaces (clubs/venues), their config and lighting, members and roles, entities, and global system settings.",
+   "tables": [
+    "space",
+    "space_config",
+    "space_lighting",
+    "space_member",
+    "space_member_role",
+    "role",
+    "entity",
+    "entity_type",
+    "user_entity_map",
+    "pending_invitation",
+    "global_ccu_settings",
+    "system_config",
+    "light_config",
+    "geolocation",
+    "region",
+    "platform_type",
+    "state_type",
+    "sport"
+   ]
+  },
+  {
+   "title": "Users and Auth",
+   "description": "Player accounts, login types, sessions, avatars, badges and personalities.",
+   "tables": [
+    "user",
+    "user_type",
+    "user_age_range",
+    "login_type",
+    "user_session_management",
+    "avatar",
+    "badge",
+    "user_badge",
+    "personality",
+    "user_exit_code",
+    "session_status"
+   ]
+  },
+  {
+   "title": "Friends",
+   "description": "Friend requests, friendships and friend notifications.",
+   "tables": [
+    "friend",
+    "friend_request",
+    "friend_request_status",
+    "friend_notification",
+    "friend_notification_type"
+   ]
+  },
+  {
+   "title": "Booths Portals and Teleport",
+   "description": "Booths and booth content, custom booth items, portals and links, teleport tables, hosting, map spots, selfie jumbotron.",
+   "tables": [
+    "booth",
+    "booth_comment",
+    "booth_media",
+    "predefined_comments",
+    "custom_booth_item",
+    "custom_booth_item_link",
+    "custom_booth_item_type",
+    "portal",
+    "portal_link",
+    "portal_position",
+    "portal_type",
+    "map_spot",
+    "teleport_table",
+    "teleport_table_button",
+    "teleport_button_position",
+    "selfie_jumbotron",
+    "hosting"
+   ]
+  },
+  {
+   "title": "Shop Items and Orders",
+   "description": "Items, prices, discounts, shop, packages, merchandise, tickets, orders, inventory, entitlements, currencies and free trial.",
+   "tables": [
+    "item",
+    "item_type",
+    "item_prices",
+    "item_discounts",
+    "discounts",
+    "discount_type",
+    "shop",
+    "shop_items",
+    "package",
+    "package_item",
+    "merchandise",
+    "merchandise_category",
+    "merchandise_type",
+    "tax_category",
+    "orders",
+    "order_line_item",
+    "order_adjustment",
+    "order_adjustment_type",
+    "order_status",
+    "ticket",
+    "ticket_type",
+    "user_inventory",
+    "entitlement",
+    "entitlement_status",
+    "currency",
+    "regional_currency",
+    "free_trial_items",
+    "free_trial_settings",
+    "user_free_trial_grant_item"
+   ]
+  },
+  {
+   "title": "Payments",
+   "description": "Gateways and their config, payment intents, charges, refunds, disputes, deposits, invoices, audit and gateway event logs.",
+   "tables": [
+    "payment_audit_log",
+    "payment_charge",
+    "payment_deposit",
+    "payment_destination",
+    "payment_dispute",
+    "payment_gateway",
+    "payment_gateway_config",
+    "payment_gateway_config_currency",
+    "payment_intent",
+    "payment_method_type",
+    "payment_refund",
+    "payment_status",
+    "invoice",
+    "invoice_line_item",
+    "invoice_status",
+    "refund_status",
+    "dispute_status",
+    "gateway_event_log",
+    "supported_payment_gateway",
+    "user_payment_method",
+    "transaction_type"
+   ]
+  },
+  {
+   "title": "Ads Campaigns and Charity",
+   "description": "Advertisers, campaigns, ads, 3D ad models, ad placements and schedules, charities.",
+   "tables": [
+    "ad_3d_model",
+    "ad_placement",
+    "ad_placement_migration_log",
+    "ad_schedule_dates",
+    "advertiser",
+    "advertiser_ad",
+    "advertiser_campaign",
+    "campaign_status",
+    "charity",
+    "charity_campaigns"
+   ]
+  },
+  {
+   "title": "Content Media and Approval",
+   "description": "Content approval workflow and versions, media, localization, blob uploads, audit and activity logs.",
+   "tables": [
+    "content_approval",
+    "content_version",
+    "workflow",
+    "media",
+    "media_type",
+    "media_localization",
+    "i18n",
+    "i18n_locale",
+    "supported_languages",
+    "blob_upload",
+    "image_data",
+    "audit_log",
+    "activity_log"
+   ]
+  },
+  {
+   "title": "Events",
+   "description": "Event definitions, types, formats and reviews. Events is phase 0 on develop (not user-usable).",
+   "tables": [
+    "event",
+    "event_format",
+    "event_type",
+    "event_reviews"
+   ]
+  },
+  {
+   "title": "Games and Leaderboards",
+   "description": "Games, game types (trivia, predict match, guess player, fastest runner), sessions, scoreboards, coins and game announcements with prizes.",
+   "tables": [
+    "game",
+    "game_badges",
+    "game_difficulty",
+    "game_option",
+    "option_text",
+    "fastest_runner_game",
+    "guess_player_game",
+    "guess_player_game_clue",
+    "predict_match_game",
+    "trivia_question_game",
+    "trivia_question_option",
+    "user_game_coins",
+    "user_game_scoreboard",
+    "user_game_session",
+    "user_guess_player_game_clue",
+    "user_match_game_predictions",
+    "game_announcement",
+    "game_announcement_prize_pack",
+    "game_announcement_user_prize",
+    "game_announcement_winner"
+   ]
+  },
+  {
+   "title": "Rewards",
+   "description": "Rewards, their composition and items, and user rewards.",
+   "tables": [
+    "reward",
+    "reward_composition_type",
+    "reward_currency",
+    "reward_item",
+    "reward_status",
+    "user_reward"
+   ]
+  },
+  {
+   "title": "Rules Engine",
+   "description": "Rule authoring: rules, conditions, actions, parameters, event types and moderation actions (re_* and rule_* tables).",
+   "tables": [
+    "re_comparator",
+    "re_context_parameter",
+    "re_dropdown_value_provider",
+    "re_event_type",
+    "re_event_type_parameter",
+    "re_events",
+    "re_logical_operator",
+    "re_moderation_action_type",
+    "re_moderation_target_selector",
+    "re_moderation_target_type",
+    "re_path_type",
+    "re_provider_type",
+    "rule_action_moderation",
+    "rule_action_reward",
+    "rule_action_type",
+    "rule_actions",
+    "rule_condition",
+    "rule_condition_group",
+    "rule_parameters",
+    "rules"
+   ]
+  },
+  {
+   "title": "Metrics and Activity",
+   "description": "Activity-tracking (mtx) tables and metric idempotency, filled by Async Push.",
+   "tables": [
+    "user_booth_activity_mtx",
+    "user_event_activity_mtx",
+    "user_space_activity_mtx",
+    "portal_access_mtx",
+    "teleport_table_activity_mtx",
+    "event_shares_mtx",
+    "metric_idempotency_key"
+   ]
+  },
+  {
+   "title": "3D Streaming and Moderation",
+   "description": "tifoxr_3d_* tables: live streaming config, sessions, entry logs, questions inbox and AI moderation.",
+   "tables": []
+  }
+ ],
+ "prefixRules": [
+  [
+   "tifoxr_3d_",
+   "3D Streaming and Moderation"
+  ],
+  [
+   "payment_",
+   "Payments"
+  ],
+  [
+   "invoice",
+   "Payments"
+  ],
+  [
+   "ad_",
+   "Ads Campaigns and Charity"
+  ],
+  [
+   "advertiser",
+   "Ads Campaigns and Charity"
+  ],
+  [
+   "campaign",
+   "Ads Campaigns and Charity"
+  ],
+  [
+   "charity",
+   "Ads Campaigns and Charity"
+  ],
+  [
+   "booth",
+   "Booths Portals and Teleport"
+  ],
+  [
+   "portal",
+   "Booths Portals and Teleport"
+  ],
+  [
+   "teleport",
+   "Booths Portals and Teleport"
+  ],
+  [
+   "custom_booth",
+   "Booths Portals and Teleport"
+  ],
+  [
+   "game_announcement",
+   "Games and Leaderboards"
+  ],
+  [
+   "game",
+   "Games and Leaderboards"
+  ],
+  [
+   "user_game",
+   "Games and Leaderboards"
+  ],
+  [
+   "trivia",
+   "Games and Leaderboards"
+  ],
+  [
+   "reward",
+   "Rewards"
+  ],
+  [
+   "user_reward",
+   "Rewards"
+  ],
+  [
+   "re_",
+   "Rules Engine"
+  ],
+  [
+   "rule",
+   "Rules Engine"
+  ],
+  [
+   "friend",
+   "Friends"
+  ],
+  [
+   "event",
+   "Events"
+  ],
+  [
+   "space",
+   "Spaces and Access"
+  ],
+  [
+   "free_trial",
+   "Shop Items and Orders"
+  ],
+  [
+   "item",
+   "Shop Items and Orders"
+  ],
+  [
+   "order",
+   "Shop Items and Orders"
+  ],
+  [
+   "package",
+   "Shop Items and Orders"
+  ],
+  [
+   "shop",
+   "Shop Items and Orders"
+  ],
+  [
+   "media",
+   "Content Media and Approval"
+  ],
+  [
+   "content_",
+   "Content Media and Approval"
+  ],
+  [
+   "i18n",
+   "Content Media and Approval"
+  ],
+  [
+   "user_",
+   "Users and Auth"
+  ]
+ ]
+}

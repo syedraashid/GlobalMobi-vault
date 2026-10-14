@@ -1,0 +1,18 @@
+# Secrets: never commit
+.env
+*.env
+.env.*
+!.env.example
+*.pem
+*.pfx
+*.key
+
+# Obsidian per-user state
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.trash/
+
+# OS
+.DS_Store
+Thumbs.db
