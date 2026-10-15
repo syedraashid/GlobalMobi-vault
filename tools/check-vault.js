@@ -57,7 +57,7 @@ for (const n of notes.concat(files.filter((f) => f.startsWith('99-Templates/') &
 const TEXT_EXT = /\.(md|js|json|yml|yaml|sh|txt|gitignore)$/i;
 const SECRET = [/AccountKey=[A-Za-z0-9+\/=]{20,}/, /SharedAccessSignature=\S{20,}/, /sk_(live|test)_[A-Za-z0-9]{10,}/, /-----BEGIN [A-Z ]*PRIVATE KEY-----/, /Password=[^;\s"'`<>{}]{4,}/i];
 for (const f of files) {
-  if (f.startsWith('05-Database/Procedures/') || f.startsWith('05-Database/_state/') || f === 'package-lock.json') continue;
+  if (f.startsWith('05-Database/Procedures/') || f.startsWith('05-Database/_state/') || f.startsWith('_proposals/') || f === 'package-lock.json') continue;
   const base = path.basename(f);
   if (!TEXT_EXT.test(base) && base !== '.gitignore') continue;
   const text = fs.readFileSync(path.join(V.ROOT, f), 'utf8');

@@ -27,7 +27,7 @@ A plugin is a folder Claude Code installs once and then loads in every session. 
 | `sql-migration` skill | `skills/sql-migration/` | When Claude writes or changes SQL ([[ADR-0002 SQL Changes Are Safe Migration Files]]). |
 | `vault` skill | `skills/vault/` | **Only when you invoke it** (`/tifoxr:vault`): loads the notes for the repo you are in. |
 | `vault-notes` skill | `skills/vault-notes/` | **When Claude writes or edits a vault note.** Folder, properties, tags, links and size rules, so notes pass `check-vault`. |
-| `vault-update` skill | `skills/vault-update/` | **Only when you invoke it** (`/tifoxr:vault-update`) after development. Proposes the lasting facts to save (files, tags, links), waits for your yes, then writes and checks. Never commits. |
+| `vault-update` skill | `skills/vault-update/` | **Only when you invoke it** (`/tifoxr:vault-update`) after development. Collects lasting facts from the chat, git and code, writes a draft proposal to `_proposals/` (git-ignored) with a clickable path to review in Obsidian, asks you its questions, and saves only after you approve. It then runs the vault checks and deletes the draft. Never commits. |
 | `refresh-db` skill | `skills/refresh-db/` | **Only when you invoke it** (`/tifoxr:refresh-db`). Marked so Claude cannot start it by itself, and the guard hook still asks for approval. |
 | Tools | `tools/` | `refresh-db.js`, `build-index.js`, `check-vault.js`, `setup.js` |
 

@@ -6,7 +6,7 @@ const path = require('path');
 const ROOT = process.env.TIFOXR_VAULT ? path.resolve(process.env.TIFOXR_VAULT) : path.resolve(__dirname, '..', '..');
 
 // Folders that hold tooling or generated files, not notes.
-const EXEMPT_DIRS = ['.git', 'node_modules', 'tools', 'hooks', 'skills', '.claude-plugin', '.githooks', '.obsidian', '99-Templates', '05-Database/Procedures', '05-Database/_state'];
+const EXEMPT_DIRS = ['.git', 'node_modules', 'tools', 'hooks', 'skills', '.claude-plugin', '.githooks', '.obsidian', '99-Templates', '05-Database/Procedures', '05-Database/_state', '_proposals'];
 const CATEGORIES = ['project', 'architecture', 'decisions', 'tasks', 'database', 'conventions'];
 const STATUSES = ['live', 'accepted', 'draft', 'planned', 'in-development', 'deprecated', 'archived', 'pending'];
 const CATEGORY_LABEL = { project: 'project', architecture: 'architecture', decisions: 'decisions', tasks: 'tasks', database: 'database', conventions: 'conventions' };

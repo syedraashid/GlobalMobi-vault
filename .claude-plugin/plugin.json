@@ -1,6 +1,6 @@
 {
   "name": "tifoxr",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "TifoXR knowledge vault for Claude Code: a small session index, on-demand database context, a safe SQL migration skill, and guard hooks (ask before refreshing the database, never run the full API test suite).",
   "author": {
     "name": "TifoXR Engineering"

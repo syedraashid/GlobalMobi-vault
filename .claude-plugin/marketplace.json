@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "tifoxr",
-      "version": "1.0.0",
+      "version": "1.1.1",
       "source": "./",
       "description": "TifoXR knowledge vault: session index, on-demand database context, SQL migration skill, guard hooks"
     }

@@ -13,6 +13,9 @@
 .obsidian/cache
 .trash/
 
+# Draft proposals written by /tifoxr:vault-update (deleted after saving)
+_proposals/
+
 # OS
 .DS_Store
 Thumbs.db
