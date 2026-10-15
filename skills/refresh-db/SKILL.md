@@ -24,11 +24,11 @@ node "$TIFOXR_VAULT/tools/refresh-db.js" $ARGUMENTS
 - `--check` only tests the connection.
 
 ## Step 2: explain what changed
-From the output, tell the user in plain words:
-- new, removed and changed tables (with column details), and new or changed procedures
-- tables listed as UNASSIGNED (they need adding to `tools/domains.json`)
-- if it says "Baseline switched", explain that this happens once, on the first live run after a script-file baseline: tables are compared in full, procedures by name only
-- if the user just ran a migration, check that the changes match what the migration was meant to do, and flag anything unexpected or missing
+The script prints a short report: totals (before, now, change), then the names of new, changed and removed tables and procedures, then logic note counts and anything that needs attention. It lists names only, never procedure bodies. The terminal copy is capped; the full lists are in `05-Database/DB Refresh Report.md`.
+
+Keep your context small: show the report to the user and add a few plain words on it. Do NOT open the report file, the `.sql` procedure files or the domain notes unless the user asks or the current task needs a specific one.
+- point out tables under NEEDS ATTENTION (they need adding to `tools/domains.json`)
+- if it says "BASELINE SWITCH", explain that this happens once, on the first live run after a script-file baseline: tables are compared in full, procedure bodies are not compared on that run, and from the next run on they are
 
 ## Step 3: procedure business-logic notes
 The summary shows procedures that are STALE, or NEW or changed with no summary. Write or update logic notes only for procedures that are STALE, new or changed AND matched by `--only` or touched by the current task. Do NOT summarise every procedure that has "not written yet" unless the user explicitly asks for all.

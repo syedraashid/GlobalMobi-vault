@@ -313,7 +313,12 @@ function buildState(model, an, env) {
   for (const [p, i] of Object.entries(an.pinfo)) procs[p] = i.hash;
   const modules = {};
   for (const [m, o] of Object.entries(model.modules)) modules[m] = { type: o.type, h: sha(normSql(o.sql)) };
-  return { env, kind: model.meta.kind, source: model.meta.source, db: model.meta.db, asOf: model.meta.asOf, tables, procs, modules };
+  return { env, kind: model.meta.kind, source: model.meta.source, db: model.meta.db, asOf: model.meta.asOf, counts: countsOf({ tables, procs, modules }, model.indexCount), tables, procs, modules };
+}
+// Totals shown in the report. Older state files have no stored counts, so derive them (indexes only when stored).
+function countsOf(s, indexes) {
+  const t = Object.values(s.tables || {});
+  return { tables: t.length, columns: t.reduce((a, x) => a + Object.keys(x.cols).length, 0), fks: t.reduce((a, x) => a + x.fks.length, 0), indexes: indexes === undefined ? null : indexes, procs: Object.keys(s.procs || {}).length, modules: Object.keys(s.modules || {}).length };
 }
 function diffState(prev, cur, opts) {
   opts = opts || {};
@@ -474,30 +479,74 @@ function logicCounts(an, logic) {
   const diff = diffState(prev, state, { procsByNameOnly: switched });
   const T = model.tables;
   const counts = { tables: an.names.length, cols: an.names.reduce((a, n) => a + T[n].cols.length, 0), fks: an.names.reduce((a, n) => a + T[n].fks.length, 0), procs: Object.keys(model.procs).length, modules: Object.keys(model.modules).length, indexes: model.indexCount };
-  const out = [];
-  const P = (s) => out.push(s);
-  P(`Refresh DB: DEV  |  source: ${model.meta.source}  |  as of ${model.meta.asOf}`);
-  P(`Tables ${counts.tables}, columns ${counts.cols}, foreign keys ${counts.fks}, stored procedures ${counts.procs}, other modules ${counts.modules}, indexes ${counts.indexes}`);
-  if (model.risky && model.risky.length) P(`WARNING: this login is a member of ${model.risky.join(', ')} and could change data. The refresh sends only SELECT queries.`);
-  if (model.unreadable) P(`WARNING: ${model.unreadable} definition(s) could not be read (grant VIEW DEFINITION to this login).`);
-
   const logic = scanLogic();
   const res = writeNotes(model, an, logic);
   const lc = logicCounts(an, logic);
 
-  if (!prev) P('\nFirst refresh: baseline created (no earlier state to compare with).');
-  else if (switched) P(`\nBaseline switched from ${prev.kind || 'file'} (${prev.asOf}) to ${state.kind}. Tables are compared in full below. Procedures are compared by name only, and their fingerprints are reset, because the text a script holds and the text the database returns can differ slightly in whitespace.`);
-  if (prev && diffEmpty(diff)) P(`\nNo changes since the last refresh (${prev.asOf}).`);
-  else if (prev) { P(`\nChanges since the last refresh (${prev.asOf}):`); listDiff(P, diff, 'new', 'removed'); }
-  if (res.removedFiles.length) P('Procedure files removed: ' + res.removedFiles.join(', '));
-  if (an.unassigned.length) P(`\nUNASSIGNED tables (add to tools/domains.json): ${an.unassigned.join(', ')}`);
+  // The report is rendered twice from the same code: the terminal copy is capped so it stays small in
+  // Claude's context, and the full copy is written to DB Refresh Report.md.
+  const prevCounts = prev ? (prev.counts || countsOf(prev, undefined)) : null;
+  const nowCounts = state.counts;
+  const render = (cap) => {
+    const o = [];
+    const names = (a) => (a.length > cap ? a.slice(0, cap).join(', ') + `, and ${a.length - cap} more (see 05-Database/DB Refresh Report.md)` : a.join(', '));
+    const pl = (p) => `${p}  [${an.pinfo[p] ? an.pinfo[p].domain : 'removed'}]`;
+    o.push(`REFRESH DB  dev   ${model.meta.asOf}`);
+    o.push(`Source       ${model.meta.source}`);
+    if (prev) o.push(`Last refresh ${prev.asOf}`);
+    if (model.risky !== undefined) o.push(`Login        ${model.risky.length ? 'WARNING: member of ' + model.risky.join(', ') + ' (can change data; this tool sends SELECT only)' : 'read-only'}`);
+    if (model.unreadable) o.push(`WARNING: ${model.unreadable} procedure definition(s) could not be read (grant VIEW DEFINITION to this login).`);
+    if (!prev) o.push('', 'First refresh: baseline created (no earlier state to compare with).');
+    else if (switched) o.push('', `BASELINE SWITCH  The vault was built from a ${(prev.kind || 'file') === 'live' ? 'live database read' : 'script file'} (${prev.asOf}). This run saved the ${state.kind === 'live' ? 'live database' : 'script file'} as the new baseline. Later runs compare live to live.`);
 
-  const changedProcs = diff ? [...diff.procsNew, ...diff.procsChanged] : [];
-  P(`\nProcedure logic notes: ${lc.ok} up to date, ${lc.stale.length} STALE, ${lc.missing.length} not written yet.`);
-  if (lc.stale.length) P('STALE (SQL changed since the summary): ' + lc.stale.join(', '));
-  const newMissing = changedProcs.filter(p => lc.missing.includes(p));
-  if (newMissing.length) P('NEW or changed, no summary yet: ' + newMissing.join(', '));
+    const totals = [['Tables', 'tables'], ['Columns', 'columns'], ['Foreign keys', 'fks'], ['Indexes', 'indexes'], ['Procedures', 'procs']];
+    if (prev && diffEmpty(diff) && !switched) {
+      o.push('', `No changes since the last refresh (${prev.asOf}).`);
+      o.push(`Tables ${nowCounts.tables}, procedures ${nowCounts.procs}. Logic notes: ${lc.ok} ok, ${lc.stale.length} STALE, ${lc.missing.length} not written.`);
+    } else {
+      if (prevCounts) {
+        o.push('', 'TOTALS', 'Item          Before   Now  Change');
+        for (const [label, k] of totals) {
+          const b = prevCounts[k], n = nowCounts[k];
+          o.push(label.padEnd(13) + (b == null ? '-' : String(b)).padStart(7) + String(n).padStart(6) + (b == null ? '-' : n === b ? '0' : (n > b ? '+' : '') + (n - b)).padStart(8));
+        }
+      } else {
+        o.push('', `Tables ${nowCounts.tables}, columns ${nowCounts.columns}, foreign keys ${nowCounts.fks}, indexes ${nowCounts.indexes}, procedures ${nowCounts.procs}`);
+      }
+      if (diff) {
+        o.push('', 'TABLES');
+        o.push(`  New (${diff.tablesNew.length})${diff.tablesNew.length ? '       ' + names(diff.tablesNew) : ''}`);
+        o.push(`  Changed (${diff.tablesChanged.length})`);
+        const sub = (t) => {
+          const items = [...t.added.map(c => '+ ' + c), ...t.removed.map(c => '- ' + c), ...t.changed.map(c => '~ ' + c), ...t.notes.map(c => '~ ' + c)];
+          const shown = items.length > Math.min(cap, 6) ? [...items.slice(0, Math.min(cap, 6)), `and ${items.length - Math.min(cap, 6)} more`] : items;
+          return `    ${t.name}   ${shown.join('   ')}`;
+        };
+        const tc = diff.tablesChanged;
+        for (const t of tc.slice(0, cap)) o.push(sub(t));
+        if (tc.length > cap) o.push(`    and ${tc.length - cap} more tables (see 05-Database/DB Refresh Report.md)`);
+        o.push(`  Removed (${diff.tablesGone.length})${diff.tablesGone.length ? '   ' + names(diff.tablesGone) : ''}`);
+        o.push('', 'PROCEDURES');
+        o.push(`  New (${diff.procsNew.length})${diff.procsNew.length ? '       ' + names(diff.procsNew.map(pl)) : ''}`);
+        if (!switched) o.push(`  Changed (${diff.procsChanged.length})${diff.procsChanged.length ? '   ' + names(diff.procsChanged.map(pl)) : ''}`);
+        o.push(`  Removed (${diff.procsGone.length})${diff.procsGone.length ? '   ' + names(diff.procsGone) : ''}`);
+        if (switched) o.push('  Bodies are not compared on this run. Procedure files now hold the live text.');
+        else if (diff.procsNew.length || diff.procsChanged.length) o.push('  SQL text: 05-Database/Procedures/<name>.sql');
+        if (diff.modNew.length || diff.modGone.length || diff.modChanged.length) o.push(`  Other modules: new ${names(diff.modNew) || '-'}; removed ${names(diff.modGone) || '-'}; changed ${names(diff.modChanged) || '-'}`);
+      }
+      o.push('', `LOGIC NOTES   up to date ${lc.ok}   STALE ${lc.stale.length}   not written ${lc.missing.length}`);
+      if (lc.stale.length) o.push('  STALE (SQL changed since the summary): ' + names(lc.stale));
+    }
+    const attn = [];
+    if (an.unassigned.length) attn.push(`${an.unassigned.length} table(s) not in a domain (add to tools/domains.json): ${names(an.unassigned)}`);
+    if (res.removedFiles.length) attn.push(`${res.removedFiles.length} procedure file(s) removed: ${names(res.removedFiles)}`);
+    if (attn.length) { o.push('', 'NEEDS ATTENTION'); for (const a of attn) o.push('  ' + a); }
+    if (!(prev && diffEmpty(diff) && !switched)) o.push('', 'NEXT   commit the updated vault notes');
+    return o;
+  };
 
+  const out = [];
+  const P = (s) => out.push(s);
   if (args.only) {
     P(`\nDetails for --only ${args.only.join(',')}:`);
     const mt = an.names.filter(matchOnly), mp = Object.keys(an.pinfo).filter(matchOnly).sort();
@@ -525,7 +574,7 @@ function logicCounts(an, logic) {
   const now = new Date().toISOString().slice(0, 19) + 'Z';
   const cs = fm(model.meta, '', 'DB Current State', 'Load only when the task touches the database, tables or stored procedures. Check the as-of date and ask before refreshing.') + `# DB Current State\n\n**Read this first** before any development that touches the database. This is the **dev** database, the single source of truth.\n\n## Freshness\n| | |\n|---|---|\n| Environment | dev |\n| Source | ${model.meta.source} |\n| Database state as of | ${model.meta.asOf} |\n| Notes refreshed | ${now} |\n| Platform | ${model.meta.edition || 'n/a'}${model.meta.compat ? ', compatibility level ' + model.meta.compat : ''} |\n\n## Rule\nBefore database-related work, check the as-of date above. If the notes may be stale, **ask the user** whether to run \`/refresh-db\` (see [[DB Refresh Command]]). **Claude must not run the refresh without the user\'s permission.** If the refresh is not run, say the information may be stale and quote the date above. After a migration runs successfully on dev, ask the user to refresh again.\n\n## Size\nTables ${counts.tables}, columns ${counts.cols}, foreign keys ${counts.fks}, stored procedures ${counts.procs}, other modules (views, functions, triggers) ${counts.modules}, indexes ${counts.indexes}.\n\n## Domains\n| Domain | Tables | Procedures |\n|---|---|---|\n${domainRows.join('\n')}\n\nAlso: [[DB Table Catalog]], [[DB Unclassified Procedures]], [[DB Refresh Report]], [[DB Refresh Log]].\n\n## Stored procedure business logic\nSummaries live in \`05-Database/Logic/\`. Status now: ${lc.ok} up to date, ${lc.stale.length} stale, ${lc.missing.length} not written. Each summary carries the hash of the SQL it was written from, so a changed procedure shows as STALE. Do not trust a STALE or missing summary; read the SQL file in \`05-Database/Procedures/\`.\n\nHuman notes about the database (meaning, history): [[Database]].\n`;
   writeIfChanged(path.join(DBDIR, 'DB Current State.md'), cs);
-  writeIfChanged(path.join(DBDIR, 'DB Refresh Report.md'), fm(model.meta, '', 'DB Refresh Report', 'Load to see what the last database refresh found.') + `# DB Refresh Report\n\nLatest run only. Written ${now}.\n\n\`\`\`\n${out.join('\n')}\n\`\`\`\n`);
+  writeIfChanged(path.join(DBDIR, 'DB Refresh Report.md'), fm(model.meta, '', 'DB Refresh Report', 'Load to see what the last database refresh found.') + `# DB Refresh Report\n\nLatest run only. Written ${now}.\n\n\`\`\`\n${render(Infinity).concat(out).join('\n')}\n\`\`\`\n`);
   const logFile = path.join(DBDIR, 'DB Refresh Log.md');
   const summ = !prev ? 'baseline' : switched ? `baseline switched to ${state.kind}; tables +${diff.tablesNew.length}/-${diff.tablesGone.length}/~${diff.tablesChanged.length}, procs +${diff.procsNew.length}/-${diff.procsGone.length}` : diffEmpty(diff) ? 'no changes' : `tables +${diff.tablesNew.length}/-${diff.tablesGone.length}/~${diff.tablesChanged.length}, procs +${diff.procsNew.length}/-${diff.procsGone.length}/~${diff.procsChanged.length}`;
   const line = `| ${now} | dev | ${model.meta.asOf} | ${counts.tables} | ${counts.procs} | ${summ} |`;
@@ -533,8 +582,7 @@ function logicCounts(an, logic) {
     const log = fs.existsSync(logFile) ? fs.readFileSync(logFile, 'utf8') : fm(model.meta, '', 'DB Refresh Log', 'Load to see the history of database refreshes.') + '# DB Refresh Log\n\nOne line per refresh that found a change. Newest at the bottom. Details of each change are in git history of this vault.\n\n| Refreshed (UTC) | Env | DB state as of | Tables | Procs | Change |\n|---|---|---|---|---|---|\n';
     writeIfChanged(logFile, log.trimEnd() + '\n' + line + '\n');
   }
-  if (res.nonAscii) P(`Note: ${res.nonAscii} procedure SQL file(s) contain non-ASCII characters (copied as-is from the database).`);
-  console.log(out.join('\n'));
+  console.log(render(15).concat(out).join('\n'));
   console.log('\nNotes updated in 05-Database. Start from "DB Current State".');
 })().catch(e => fail(e.stack || e.message));
 
@@ -543,21 +591,4 @@ function parseMeta(text) {
   if (!l) throw new Error('sqlcmd returned no data (is the database name right, and does the login have access?).');
   const f = l.split('|');
   return { db: f[1], risky: [f[6] === '1' && 'db_owner', f[7] === '1' && 'db_datawriter', f[8] === '1' && 'db_ddladmin'].filter(Boolean) };
-}
-
-function listDiff(P, d, newLbl, goneLbl) {
-  if (!d || diffEmpty(d)) { P('  no differences.'); return; }
-  if (d.tablesNew.length) P(`  Tables ${newLbl} (${d.tablesNew.length}): ${d.tablesNew.join(', ')}`);
-  if (d.tablesGone.length) P(`  Tables ${goneLbl} (${d.tablesGone.length}): ${d.tablesGone.join(', ')}`);
-  for (const t of d.tablesChanged) {
-    P(`  Table changed: ${t.name}`);
-    for (const c of t.added) P(`    + column ${c}`);
-    for (const c of t.removed) P(`    - column ${c}`);
-    for (const c of t.changed) P(`    ~ column ${c}`);
-    for (const c of t.notes) P(`    ~ ${c}`);
-  }
-  if (d.procsNew.length) P(`  Procedures ${newLbl} (${d.procsNew.length}): ${d.procsNew.join(', ')}`);
-  if (d.procsGone.length) P(`  Procedures ${goneLbl} (${d.procsGone.length}): ${d.procsGone.join(', ')}`);
-  if (d.procsChanged.length) P(`  Procedures changed (${d.procsChanged.length}): ${d.procsChanged.join(', ')}`);
-  if (d.modNew.length || d.modGone.length || d.modChanged.length) P(`  Other modules: new ${d.modNew.join(', ') || '-'}; removed ${d.modGone.join(', ') || '-'}; changed ${d.modChanged.join(', ') || '-'}`);
 }

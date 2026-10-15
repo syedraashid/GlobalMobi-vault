@@ -29,14 +29,17 @@ From any terminal: `node "$TIFOXR_VAULT/tools/refresh-db.js"` (or the path to `t
 ## What it does
 1. Calls `sqlcmd` with the Entra email and password from `C:\TifoXR\tifoxr-access.env`, like `sqlcmd -G -U <email> -P <password>`. The password is passed through an environment variable, never on the command line, and is never printed.
 2. Runs **SELECT-only** queries on the catalog in a single call: tables, columns, keys, indexes, and the SQL text of every procedure. Table data is never read. A built-in guard refuses to run if the query script contains anything that could change data.
-3. Compares with the previous run (`05-Database/_state/dev.json`) and lists: new, removed and changed tables (column by column), and new, removed and changed procedures.
+3. Compares with the previous run (`05-Database/_state/dev.json`) and lists: new, removed and changed tables (column by column), and new, removed and changed procedures (names only, never bodies).
 4. Rewrites the generated notes: `DB Current State`, one note per domain, `DB Table Catalog`, and one `.sql` file per procedure in `05-Database/Procedures/`.
-5. Writes `DB Refresh Report` (latest run) and adds a line to `DB Refresh Log` when something changed.
+5. Writes `DB Refresh Report` (latest run, full lists) and adds a line to `DB Refresh Log` when something changed.
 
 It always reads everything (this is only metadata, so it is quick) and reports only the differences, so "new things" and "everything" are both covered without a mode switch.
 
+## What the output looks like
+A header (source, last refresh, login access), a totals table (tables, columns, foreign keys, indexes, procedures: before, now, change), then TABLES and PROCEDURES (new, changed, removed), the logic note counts, and NEEDS ATTENTION (for example tables not yet in a domain). The terminal copy is capped at 15 names per list, with "and N more"; `DB Refresh Report` holds the full lists. All the reading and comparing happens inside the script, so only this short report reaches Claude's context.
+
 ## First live run
-The first baseline came from a schema script. The text a script holds and the text the database returns can differ slightly in whitespace. So on the first live run the tool **compares tables in full but procedures by name only**, resets the procedure fingerprints, and says "Baseline switched". From the second run on it behaves normally.
+The first baseline came from a schema script. The text a script holds and the text the database returns can differ slightly in whitespace. So on the first live run the tool **compares tables in full but procedures by name only**, resets the procedure fingerprints, and says "BASELINE SWITCH". It does not list edited procedure bodies on that run, but every procedure `.sql` file is rewritten from the live text, so the files are correct afterward. From the second run on, edited bodies are listed.
 
 ## Stored procedure business logic
 Notes in `05-Database/Logic/` explain what each procedure does. Each section stores the **hash of the SQL it was written from**. When the SQL changes, the refresh marks the section **STALE**, and the domain notes show ok, STALE or missing next to every procedure.
